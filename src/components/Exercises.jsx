@@ -8,13 +8,13 @@ const Exercises = () => {
   const [showExerciseAddBtn, setShowExerciseAddBtn] = useState(false);
 
   useEffect(() => {
-    getExercises();
+    getExercisesService();
   }, []);
 
-  const getExercises = () => {
+  const getExercisesService = () => {
     axios
       .get(
-        "http://localhost:8787/api/workout-template/6735d7699ebaa1f74f7a19e5/exercises",
+        "http://localhost:8787/api/workout-template/6735d7699ebaa1f74e6a19e5/exercises",
         {
           headers: {
             Authorization:
@@ -30,7 +30,12 @@ const Exercises = () => {
         console.error("Error fetching exercises:", error);
       });
   };
-  
+
+  const addExerciseService = (e) => {
+    e.preventDefault();
+    console.log(inputRef.current.value);
+  };
+
   const handleAddTemplateClick = () => {
     setShowTemplate(!showTemplate);
   };
@@ -47,7 +52,7 @@ const Exercises = () => {
     return (
       <div className="flex bg-red-900 justify-between">
         <label>Exercise name:</label>
-        <input type="text" onKeyUp={addExerciceButton} />
+        <input type="text" onChange={addExerciceButton} />
         <button
           className={`bg-red-500 px-1 ${
             showExerciseAddBtn ? "opacity-1" : "opacity-0"
@@ -83,7 +88,9 @@ const Exercises = () => {
       {showTemplate && (
         <div>
           {renderExercisesList()}
-          {renderAddExerciseInput()}
+          <form onSubmit={addExerciseService()}>
+            {renderAddExerciseInput()}
+          </form>
         </div>
       )}
     </div>
