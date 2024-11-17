@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { list } from "postcss";
 
 const Exercises = () => {
   const [exercises, setExercises] = useState([]);
@@ -13,7 +14,7 @@ const Exercises = () => {
   const getExercises = () => {
     axios
       .get(
-        "http://localhost:8787/api/workout-template/6735d7699ebaa1f74f6a19e5/exercises",
+        "http://localhost:8787/api/workout-template/6735d7699ebaa1f74f7a19e5/exercises",
         {
           headers: {
             Authorization:
@@ -24,11 +25,12 @@ const Exercises = () => {
       .then((res) => {
         const exercises = res.data.exercises;
         setExercises(exercises);
-
-        console.log(exercises);
+      })
+      .catch((error) => {
+        console.error("Error fetching exercises:", error);
       });
   };
-
+  
   const handleAddTemplateClick = () => {
     setShowTemplate(!showTemplate);
   };
@@ -36,7 +38,6 @@ const Exercises = () => {
   const renderAddExerciseInput = () => {
     const addExerciceButton = (e) => {
       if (e.target.value) {
-        console.log("ss");
         setShowExerciseAddBtn(true);
       } else {
         setShowExerciseAddBtn(false);
@@ -58,7 +59,18 @@ const Exercises = () => {
     );
   };
 
-  const renderExercisesList = () => {};
+  const renderExercisesList = () => {
+    return (
+      <div>
+        <h3 className="font-black bg-red-600">Current exercises</h3>
+        <ul>
+          {exercises.map((exercise) => {
+            return <li>{exercise.exercise_name}</li>;
+          })}
+        </ul>
+      </div>
+    );
+  };
 
   return (
     <div className="bg-red-300 w-96 h-96 m-auto">
@@ -70,7 +82,7 @@ const Exercises = () => {
       </button>
       {showTemplate && (
         <div>
-          {renderExercisesList}
+          {renderExercisesList()}
           {renderAddExerciseInput()}
         </div>
       )}
