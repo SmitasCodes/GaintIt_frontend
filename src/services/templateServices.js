@@ -36,4 +36,21 @@ const getExercisesService = async () => {
   }
 };
 
-export { getExercisesService, getAllTemplatesService };
+// Service to delete selected template
+const deleteTemplateService = async (id) => {
+  try {
+    const response = await axios.delete(
+      `http://localhost:8787/api/workout-template/${id}`,
+      {
+        headers: {
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MjkzZDkzMWQ1YzgxZDE4NzM3ZGUwNSIsImlhdCI6MTczMDkwMjExMSwiZXhwIjoxNzMzNDk0MTExfQ.pwyD88jbQQX6aEoOsHp6qUKBYS-X2DZhso1ey44HrEw",
+        },
+      }
+    );
+  } catch (error) {
+    console.error("Error fetching exercises:", error);
+  }
+};
+
+export { getExercisesService, getAllTemplatesService, deleteTemplateService };
