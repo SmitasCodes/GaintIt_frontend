@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
 import { getExercisesService } from "../services/templateServices";
-import ExercisesInput from "./ExercisesInput";
 import AddTemplate from "./AddTemplate";
 
 const Exercises = () => {
