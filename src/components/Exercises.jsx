@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { list } from "postcss";
 
@@ -6,6 +6,7 @@ const Exercises = () => {
   const [exercises, setExercises] = useState([]);
   const [showTemplate, setShowTemplate] = useState(false);
   const [showExerciseAddBtn, setShowExerciseAddBtn] = useState(false);
+  const inputRef = useRef(0);
 
   useEffect(() => {
     getExercisesService();
@@ -31,9 +32,11 @@ const Exercises = () => {
       });
   };
 
-  const addExerciseService = (e) => {
-    e.preventDefault();
-    console.log(inputRef.current.value);
+  
+
+  const addExerciseService = (event) => {
+    event.preventDefault();
+    console.log(inputRef.current.value)
   };
 
   const handleAddTemplateClick = () => {
@@ -52,7 +55,7 @@ const Exercises = () => {
     return (
       <div className="flex bg-red-900 justify-between">
         <label>Exercise name:</label>
-        <input type="text" onChange={addExerciceButton} />
+        <input type="text" onChange={addExerciceButton} ref={inputRef} />
         <button
           className={`bg-red-500 px-1 ${
             showExerciseAddBtn ? "opacity-1" : "opacity-0"
@@ -88,7 +91,7 @@ const Exercises = () => {
       {showTemplate && (
         <div>
           {renderExercisesList()}
-          <form onSubmit={addExerciseService()}>
+          <form onSubmit={addExerciseService}>
             {renderAddExerciseInput()}
           </form>
         </div>
