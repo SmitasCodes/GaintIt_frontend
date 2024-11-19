@@ -1,4 +1,6 @@
 import React, { useRef, useState } from "react";
+import TemplatesSectionWrapper from "./TemplatesSectionWrapper";
+import TemplateSubmitButton from "./TemplateSubmitButton";
 
 const TemplateForm = () => {
   const [showExerciseAddBtn, setShowExerciseAddBtn] = useState(false);
@@ -13,8 +15,8 @@ const TemplateForm = () => {
   };
 
   return (
-    <>
-      <form className="bg-red-900 px-2 relative">
+    <TemplatesSectionWrapper>
+      <form className="bg-red-900 px-2 relative ">
         <div className="flex justify-between">
           <label>Exercise name:</label>
           <input type="text" onChange={addExerciceButton} ref={inputRef} />
@@ -26,9 +28,9 @@ const TemplateForm = () => {
             Add
           </button>
         </div>
-        <button type="submit" className="inline-block bg-red-400 px-2 py-1 rounded-xl text-base">Submit template</button>
       </form>
-    </>
+      <TemplateSubmitButton buttonText={"Submit Template"} />
+    </TemplatesSectionWrapper>
   );
 };
 

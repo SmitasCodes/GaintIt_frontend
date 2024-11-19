@@ -7,6 +7,7 @@ import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
 import TemplateForm from "./TemplateForm";
 import TemplatesSectionWrapper from "./TemplatesSectionWrapper";
+import TemplateSubmitButton from "./TemplateSubmitButton";
 
 const WorkoutTemplates = () => {
   const [templates, setTemplates] = useState([]);
@@ -68,19 +69,23 @@ const WorkoutTemplates = () => {
                 );
               })
             )}
-            <div className="h-10 w-full absolute bottom-0 transform bg-red-300 flex justify-center items-center">
-              <button
-                className="px-4 py-1 bg-red-500 rounded-2xl"
-                onClick={() => setShowForm(!showForm)}
-              >
-                Add template
-              </button>
-            </div>
           </ul>
+          <TemplateSubmitButton
+            buttonText={"Add New Template"}
+            clickFunction={() => setShowForm(!showForm)}
+          />
         </TemplatesSectionWrapper>
       ) : (
         <TemplateForm />
       )}
+      {/* <div className="h-10 w-full absolute bottom-0 transform bg-red-300 flex justify-center items-center">
+        <button
+          className="px-4 py-1 bg-red-500 rounded-2xl"
+          onClick={() => setShowForm(!showForm)}
+        >
+          Add template
+        </button>
+      </div> */}
     </div>
   );
 };
