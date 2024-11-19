@@ -14,16 +14,19 @@ const TemplateForm = () => {
 
   return (
     <>
-      <form className="flex justify-between w-96  bg-red-900">
-        <label>Exercise name:</label>
-        <input type="text" onChange={addExerciceButton} ref={inputRef} />
-        <button
-          className={`bg-red-500 px-1 inline ${
-            showExerciseAddBtn ? "opacity-1" : "opacity-0"
-          }`}
-        >
-          Add
-        </button>
+      <form className="bg-red-900 px-2 relative">
+        <div className="flex justify-between">
+          <label>Exercise name:</label>
+          <input type="text" onChange={addExerciceButton} ref={inputRef} />
+          <button
+            className={`bg-red-500 px-1 inline ${
+              showExerciseAddBtn ? "opacity-1" : "opacity-0"
+            }`}
+          >
+            Add
+          </button>
+        </div>
+        <button type="submit" className="inline-block bg-red-400 px-2 py-1 rounded-xl text-base">Submit template</button>
       </form>
     </>
   );
