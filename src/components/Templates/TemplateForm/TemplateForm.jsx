@@ -4,20 +4,17 @@ import TemplateSubmitButton from "../TemplateSubmitButton";
 import AddExerciseInput from "./AddExerciseInput";
 
 const TemplateForm = () => {
-  const [exercises, setExercises] = useState({ exercises: [] });
+  const [exercises, setExercises] = useState({ name: "", exercises: [] });
   const [templateReqBody, setTemplateReqBody] = useState("");
 
-  useEffect(() => {}, []);
-
   const getExerciseInput = (exerciseInput) => {
-    // setExercises({
-    //   // ...exercises,
-    //   exercises: [{ "exercise-name": exerciseInput }],
-    // });
-    // console.log(exercises);
-
     const newExercise = { "exercise-name": exerciseInput };
-    setExercises((prevExercises) => [...prevExercises, newExercise]);
+
+    setExercises((prevExercises) => ({
+      ...prevExercises,
+      exercises: [...prevExercises.exercises, newExercise],
+    }));
+    <AddExerciseInput/>
   };
 
   return (
