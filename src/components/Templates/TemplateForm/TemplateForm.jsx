@@ -3,6 +3,7 @@ import TemplatesSectionWrapper from "../TemplatesSectionWrapper";
 import TemplateSubmitButton from "../TemplateSubmitButton";
 import AddExerciseInput from "./AddExerciseInput";
 import TemplateExercises from "../TemplateExercises";
+import { v4 as uuidv4 } from "uuid";
 
 const TemplateForm = () => {
   const [exercises, setExercises] = useState([]);
@@ -15,13 +16,11 @@ const TemplateForm = () => {
   const getExerciseInput = (exerciseInput) => {
     setExercises((prevExercises) => [
       ...prevExercises,
-      { "exercise-name": exerciseInput },
+      { "exercise-name": exerciseInput, id: uuidv4() },
     ]);
   };
 
-  const addTemplateButtonHandler = () => {
-    console.log(templateName);
-  };
+  const addTemplateButtonHandler = () => {};
 
   return (
     <TemplatesSectionWrapper>
@@ -35,7 +34,7 @@ const TemplateForm = () => {
             value={templateName}
           />
         </div>
-        <TemplateExercises exercises={exercises} />
+        <TemplateExercises exercises={exercises} setExercises={setExercises} />
         <AddExerciseInput getInput={getExerciseInput} />
       </form>
       <TemplateSubmitButton
