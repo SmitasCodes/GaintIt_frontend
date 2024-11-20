@@ -19,7 +19,7 @@ const TemplateExercises = ({ exercises, setExercises }) => {
               key={exercise.id}
               className="flex justify-between items-center bg-red-300 mb-2 px-2 rounded-xl"
             >
-              {exercise["exercise-name"]}
+              {exercise["exercise_name"]}
               <MdDelete
                 className="cursor-pointer"
                 title="delete"

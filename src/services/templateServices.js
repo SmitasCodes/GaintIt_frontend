@@ -18,6 +18,26 @@ const getAllTemplatesService = async () => {
   }
 };
 
+// Service to post a template
+const postTemplateService = async (template) => {
+  try {
+    const { name, exercises } = template;
+
+    await axios.post(
+      `http://localhost:8787/api/workout-template/`,
+      { name, exercises },
+      {
+        headers: {
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MjkzZDkzMWQ1YzgxZDE4NzM3ZGUwNSIsImlhdCI6MTczMDkwMjExMSwiZXhwIjoxNzMzNDk0MTExfQ.pwyD88jbQQX6aEoOsHp6qUKBYS-X2DZhso1ey44HrEw",
+        },
+      }
+    );
+  } catch (error) {
+    console.error("Error fetching exercises:", error);
+  }
+};
+
 // Service to get all exercises of template
 const getExercisesService = async () => {
   try {
@@ -50,4 +70,9 @@ const deleteTemplateService = async (id) => {
   }
 };
 
-export { getExercisesService, getAllTemplatesService, deleteTemplateService };
+export {
+  getExercisesService,
+  getAllTemplatesService,
+  deleteTemplateService,
+  postTemplateService,
+};

@@ -14,8 +14,12 @@ const AddExerciseInput = ({ getInput }) => {
 
   const addExerciseButtonHandler = (e) => {
     e.preventDefault();
-
+    if (!inputValue) {
+      console.log("Please enter exercise name");
+      return;
+    }
     getInput(inputValue);
+    setInputValue("");
   };
 
   return (

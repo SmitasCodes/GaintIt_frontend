@@ -4,6 +4,7 @@ import TemplateSubmitButton from "../TemplateSubmitButton";
 import AddExerciseInput from "./AddExerciseInput";
 import TemplateExercises from "../TemplateExercises";
 import { v4 as uuidv4 } from "uuid";
+import { postTemplateService } from "../../../services/templateServices";
 
 const TemplateForm = () => {
   const [exercises, setExercises] = useState([]);
@@ -16,11 +17,38 @@ const TemplateForm = () => {
   const getExerciseInput = (exerciseInput) => {
     setExercises((prevExercises) => [
       ...prevExercises,
-      { "exercise-name": exerciseInput, id: uuidv4() },
+      { exercise_name: exerciseInput, id: uuidv4() },
     ]);
   };
 
-  const addTemplateButtonHandler = () => {};
+  const addTemplateButtonHandler = () => {
+    if (!templateName) {
+      console.log("Please enter template name");
+      return;
+    } else if (!exercises.length) {
+      console.log("Please add some exercises");
+      return;
+    }
+
+    // Removing id from exercises, before posting
+    const transformedExercises = exercises.map((exercise) => ({
+      exercise_name: exercise["exercise_name"],
+    }));
+
+    setAddTemplateReq({ name: templateName, exercises: transformedExercises });
+    const postTemplate = async () => {
+      try {
+        const postTemplateReq = await postTemplateService(addTemplateReq);
+      } catch (error) {
+        console.error("Error when trying to post template");
+      }
+    };
+
+    postTemplate();
+
+    setExercises([]);
+    setTemplateName("");
+  };
 
   return (
     <TemplatesSectionWrapper>
