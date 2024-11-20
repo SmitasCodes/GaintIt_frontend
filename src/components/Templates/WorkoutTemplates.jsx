@@ -5,7 +5,7 @@ import {
 } from "../../services/templateServices";
 import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
-import TemplateForm from "./TemplateForm";
+import TemplateForm from "./TemplateForm/TemplateForm";
 import TemplatesSectionWrapper from "./TemplatesSectionWrapper";
 import TemplateSubmitButton from "./TemplateSubmitButton";
 
@@ -25,9 +25,7 @@ const WorkoutTemplates = () => {
 
     fetchTemplates();
   }, []);
-  if (showForm) {
-    console.log("big");
-  }
+
   const handleDelete = async (templateId) => {
     console.log("Deleting template with ID:", templateId);
 
