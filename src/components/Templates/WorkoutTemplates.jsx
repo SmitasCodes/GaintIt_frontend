@@ -11,9 +11,9 @@ import TemplatesSectionWrapper from "./TemplatesSectionWrapper";
 const WorkoutTemplates = () => {
   const [templates, setTemplates] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [editTemplate, setEditTemplate] = useState("false");
 
   const fetchTemplates = async () => {
-    console.log("ssss")
     try {
       const templatesRes = await getAllTemplatesService();
       setTemplates(templatesRes);
@@ -39,18 +39,22 @@ const WorkoutTemplates = () => {
     }
   };
 
+  const handleEdit = async (template) => {
+    setEditTemplate(template);
+    setShowForm(true);
+  };
+
   return (
     <div className="bg-red-300 w-96 h-96 m-auto relative flex flex-col">
-      {/* <h2 className="text-center py-2">Templates | Add new</h2> */}
-      <div className="flex h-8 justify-center items-center">
+      <div className="flex h-8 justify-center items-center ">
         <a
-          className="border-red-900 border-r-2 pr-2"
+          className="border-red-900 border-r-2 pr-2 cursor-pointer"
           onClick={() => setShowForm(false)}
         >
           All templates
         </a>
-        <a className="pl-2" onClick={() => setShowForm(true)}>
-          Add/Edit
+        <a className="pl-2 cursor-pointer" onClick={() => setShowForm(true)}>
+          Add / Edit
         </a>
       </div>
       {!showForm ? (
@@ -62,12 +66,16 @@ const WorkoutTemplates = () => {
               templates.map((template) => {
                 return (
                   <li
-                    className="bg-red-400 mb-2 px-3 flex justify-between"
+                    className="bg-red-400 my-2 px-3 flex justify-between"
                     key={template._id}
                   >
                     {template.name}
                     <div className="flex items-center">
-                      <CiEdit className="mr-2 cursor-pointer" title="edit" />
+                      <CiEdit
+                        className="mr-2 cursor-pointer"
+                        title="edit"
+                        onClick={() => handleEdit(template)}
+                      />
                       <MdDelete
                         className="cursor-pointer"
                         title="delete"
@@ -84,6 +92,8 @@ const WorkoutTemplates = () => {
         <TemplateForm
           setShowForm={setShowForm}
           refetchTemplates={fetchTemplates}
+          editTemplate={editTemplate}
+          setEditTemplate={setEditTemplate}
         />
       )}
       {/* <div className="h-10 w-full absolute bottom-0 transform bg-red-300 flex justify-center items-center">

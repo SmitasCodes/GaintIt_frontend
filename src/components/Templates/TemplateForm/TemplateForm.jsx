@@ -4,16 +4,28 @@ import TemplateSubmitButton from "../TemplateSubmitButton";
 import AddExerciseInput from "./AddExerciseInput";
 import TemplateExercises from "../TemplateExercises";
 import { v4 as uuidv4 } from "uuid";
-import { postTemplateService } from "../../../services/templateServices";
+import {
+  postTemplateService,
+  updateTemplateService,
+} from "../../../services/templateServices";
 
-const TemplateForm = ({ refetchTemplates }) => {
+const TemplateForm = ({ refetchTemplates, editTemplate, setEditTemplate }) => {
   const [exercises, setExercises] = useState([]);
   const [templateName, setTemplateName] = useState("");
+  const [templateID, setTemplateID] = useState("");
+
+  useEffect(() => {
+    if (editTemplate) {
+      setTemplateName(editTemplate.name);
+      setExercises(editTemplate.exercises);
+      setTemplateID(editTemplate._id);
+    }
+  }, []);
 
   const getExerciseInput = (exerciseInput) => {
     setExercises((prevExercises) => [
       ...prevExercises,
-      { exercise_name: exerciseInput, id: uuidv4() },
+      { exercise_name: exerciseInput, _id: uuidv4() },
     ]);
   };
 
@@ -26,7 +38,7 @@ const TemplateForm = ({ refetchTemplates }) => {
       return;
     }
 
-    // Removing id from exercises, before posting
+    // Removing _id from exercises, before posting
     const transformedExercises = exercises.map((exercise) => ({
       exercise_name: exercise["exercise_name"],
     }));
@@ -50,6 +62,30 @@ const TemplateForm = ({ refetchTemplates }) => {
     setTemplateName("");
   };
 
+  const updateTemplateButtonHandler = async () => {
+    if (!templateName) {
+      console.log("Please enter template name");
+      return;
+    } else if (!exercises.length) {
+      console.log("Please add some exercises");
+      return;
+    }
+
+    const templateData = {
+      name: templateName,
+      exercises,
+    };
+
+    try {
+      const response = await updateTemplateService(templateID, templateData);
+      if (response == 200) {
+        console.log("Template updated succesfully!");
+      }
+    } catch (error) {
+      console.error("Error when trying to update template");
+    }
+  };
+
   return (
     <TemplatesSectionWrapper>
       <form className="bg-red-900 px-2 relative ">
@@ -65,10 +101,18 @@ const TemplateForm = ({ refetchTemplates }) => {
         <TemplateExercises exercises={exercises} setExercises={setExercises} />
         <AddExerciseInput getInput={getExerciseInput} />
       </form>
-      <TemplateSubmitButton
-        buttonText={"Submit Template"}
-        clickFunction={addTemplateButtonHandler}
-      />
+      {!editTemplate ? (
+        <TemplateSubmitButton
+          buttonText={"Submit Template"}
+          clickFunction={addTemplateButtonHandler}
+        />
+      ) : (
+        <TemplateSubmitButton
+          buttonText={"Update Template"}
+          clickFunction={updateTemplateButtonHandler}
+        />
+      )}
+
       {/* <button
         className="bg-red-500 absolute bottom-0"
         onClick={() => setShowForm(false)}

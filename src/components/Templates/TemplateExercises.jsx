@@ -4,7 +4,7 @@ import { MdDelete } from "react-icons/md";
 const TemplateExercises = ({ exercises, setExercises }) => {
   const handleDelete = (exerciseID) => {
     setExercises((prevExercises) =>
-      prevExercises.filter((exercise) => exercise.id != exerciseID)
+      prevExercises.filter((exercise) => exercise._id != exerciseID)
     );
   };
 
@@ -16,14 +16,14 @@ const TemplateExercises = ({ exercises, setExercises }) => {
         exercises.map((exercise) => {
           return (
             <li
-              key={exercise.id}
+              key={exercise._id}
               className="flex justify-between items-center bg-red-300 mb-2 px-2 rounded-xl"
             >
               {exercise["exercise_name"]}
               <MdDelete
                 className="cursor-pointer"
                 title="delete"
-                onClick={() => handleDelete(exercise.id)}
+                onClick={() => handleDelete(exercise._id)}
               ></MdDelete>
             </li>
           );

@@ -36,6 +36,42 @@ const postTemplateService = async (template) => {
 
     return response.status;
   } catch (error) {
+    console.error("Error when posting template:", error);
+  }
+};
+
+// Service to update template
+const updateTemplateService = async (id, template) => {
+  const { name, exercises } = template;
+
+  try {
+    const response = await axios.put(
+      `http://localhost:8787/api/workout-template/${id}`,
+      { name, exercises },
+      {
+        headers: {
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MjkzZDkzMWQ1YzgxZDE4NzM3ZGUwNSIsImlhdCI6MTczMDkwMjExMSwiZXhwIjoxNzMzNDk0MTExfQ.pwyD88jbQQX6aEoOsHp6qUKBYS-X2DZhso1ey44HrEw",
+        },
+      }
+    );
+
+    return response.status;
+  } catch (error) {
+    console.error("Error when updating template:", error);
+  }
+};
+
+// Service to delete template
+const deleteTemplateService = async (id) => {
+  try {
+    await axios.delete(`http://localhost:8787/api/workout-template/${id}`, {
+      headers: {
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MjkzZDkzMWQ1YzgxZDE4NzM3ZGUwNSIsImlhdCI6MTczMDkwMjExMSwiZXhwIjoxNzMzNDk0MTExfQ.pwyD88jbQQX6aEoOsHp6qUKBYS-X2DZhso1ey44HrEw",
+      },
+    });
+  } catch (error) {
     console.error("Error fetching exercises:", error);
   }
 };
@@ -58,23 +94,10 @@ const getExercisesService = async () => {
   }
 };
 
-// Service to delete selected template
-const deleteTemplateService = async (id) => {
-  try {
-    await axios.delete(`http://localhost:8787/api/workout-template/${id}`, {
-      headers: {
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MjkzZDkzMWQ1YzgxZDE4NzM3ZGUwNSIsImlhdCI6MTczMDkwMjExMSwiZXhwIjoxNzMzNDk0MTExfQ.pwyD88jbQQX6aEoOsHp6qUKBYS-X2DZhso1ey44HrEw",
-      },
-    });
-  } catch (error) {
-    console.error("Error fetching exercises:", error);
-  }
-};
-
 export {
   getExercisesService,
   getAllTemplatesService,
   deleteTemplateService,
   postTemplateService,
+  updateTemplateService,
 };
