@@ -6,7 +6,7 @@ import TemplateExercises from "../TemplateExercises";
 import { v4 as uuidv4 } from "uuid";
 import { postTemplateService } from "../../../services/templateServices";
 
-const TemplateForm = () => {
+const TemplateForm = ({ refetchTemplates }) => {
   const [exercises, setExercises] = useState([]);
   const [templateName, setTemplateName] = useState("");
 
@@ -45,6 +45,7 @@ const TemplateForm = () => {
       console.error("Error when trying to post template");
     }
 
+    refetchTemplates();
     setExercises([]);
     setTemplateName("");
   };
@@ -68,6 +69,12 @@ const TemplateForm = () => {
         buttonText={"Submit Template"}
         clickFunction={addTemplateButtonHandler}
       />
+      {/* <button
+        className="bg-red-500 absolute bottom-0"
+        onClick={() => setShowForm(false)}
+      >
+        See templates
+      </button> */}
     </TemplatesSectionWrapper>
   );
 };

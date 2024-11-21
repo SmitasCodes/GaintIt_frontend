@@ -7,22 +7,22 @@ import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
 import TemplateForm from "./TemplateForm/TemplateForm";
 import TemplatesSectionWrapper from "./TemplatesSectionWrapper";
-import TemplateSubmitButton from "./TemplateSubmitButton";
 
 const WorkoutTemplates = () => {
   const [templates, setTemplates] = useState([]);
   const [showForm, setShowForm] = useState(false);
 
-  useEffect(() => {
-    const fetchTemplates = async () => {
-      try {
-        const templatesRes = await getAllTemplatesService();
-        setTemplates(templatesRes);
-      } catch (error) {
-        console.error("Error when fetching templates: ", error);
-      }
-    };
+  const fetchTemplates = async () => {
+    console.log("ssss")
+    try {
+      const templatesRes = await getAllTemplatesService();
+      setTemplates(templatesRes);
+    } catch (error) {
+      console.error("Error when fetching templates: ", error);
+    }
+  };
 
+  useEffect(() => {
     fetchTemplates();
   }, []);
 
@@ -41,7 +41,18 @@ const WorkoutTemplates = () => {
 
   return (
     <div className="bg-red-300 w-96 h-96 m-auto relative flex flex-col">
-      <h2 className="text-center py-2">Templates</h2>
+      {/* <h2 className="text-center py-2">Templates | Add new</h2> */}
+      <div className="flex h-8 justify-center items-center">
+        <a
+          className="border-red-900 border-r-2 pr-2"
+          onClick={() => setShowForm(false)}
+        >
+          All templates
+        </a>
+        <a className="pl-2" onClick={() => setShowForm(true)}>
+          Add/Edit
+        </a>
+      </div>
       {!showForm ? (
         <TemplatesSectionWrapper>
           <ul>
@@ -68,13 +79,12 @@ const WorkoutTemplates = () => {
               })
             )}
           </ul>
-          <TemplateSubmitButton
-            buttonText={"Add New Template"}
-            clickFunction={() => setShowForm(!showForm)}
-          />
         </TemplatesSectionWrapper>
       ) : (
-        <TemplateForm />
+        <TemplateForm
+          setShowForm={setShowForm}
+          refetchTemplates={fetchTemplates}
+        />
       )}
       {/* <div className="h-10 w-full absolute bottom-0 transform bg-red-300 flex justify-center items-center">
         <button
