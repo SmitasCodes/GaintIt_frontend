@@ -23,7 +23,7 @@ const postTemplateService = async (template) => {
   try {
     const { name, exercises } = template;
 
-    await axios.post(
+    const response = await axios.post(
       `http://localhost:8787/api/workout-template/`,
       { name, exercises },
       {
@@ -33,6 +33,8 @@ const postTemplateService = async (template) => {
         },
       }
     );
+
+    return response.status;
   } catch (error) {
     console.error("Error fetching exercises:", error);
   }

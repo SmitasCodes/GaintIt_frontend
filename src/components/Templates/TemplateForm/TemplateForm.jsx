@@ -8,10 +8,6 @@ import { postTemplateService } from "../../../services/templateServices";
 
 const TemplateForm = () => {
   const [exercises, setExercises] = useState([]);
-  const [addTemplateReq, setAddTemplateReq] = useState({
-    name: "",
-    exercises: [],
-  });
   const [templateName, setTemplateName] = useState("");
 
   const getExerciseInput = (exerciseInput) => {
@@ -21,7 +17,7 @@ const TemplateForm = () => {
     ]);
   };
 
-  const addTemplateButtonHandler = () => {
+  const addTemplateButtonHandler = async () => {
     if (!templateName) {
       console.log("Please enter template name");
       return;
@@ -35,16 +31,19 @@ const TemplateForm = () => {
       exercise_name: exercise["exercise_name"],
     }));
 
-    setAddTemplateReq({ name: templateName, exercises: transformedExercises });
-    const postTemplate = async () => {
-      try {
-        const postTemplateReq = await postTemplateService(addTemplateReq);
-      } catch (error) {
-        console.error("Error when trying to post template");
-      }
+    const templateData = {
+      name: templateName,
+      exercises: transformedExercises,
     };
 
-    postTemplate();
+    try {
+      const response = await postTemplateService(templateData);
+      if (response == 201) {
+        console.log("Template added succesfully!S");
+      }
+    } catch (error) {
+      console.error("Error when trying to post template");
+    }
 
     setExercises([]);
     setTemplateName("");
