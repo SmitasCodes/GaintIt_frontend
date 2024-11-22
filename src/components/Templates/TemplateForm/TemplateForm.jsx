@@ -9,7 +9,7 @@ import {
   updateTemplateService,
 } from "../../../services/templateServices";
 
-const TemplateForm = ({ refetchTemplates, editTemplate }) => {
+const TemplateForm = ({ refetchTemplates, editTemplate, setEditTemplate }) => {
   const [exercises, setExercises] = useState([]);
   const [templateName, setTemplateName] = useState("");
   const [templateID, setTemplateID] = useState("");
@@ -20,7 +20,7 @@ const TemplateForm = ({ refetchTemplates, editTemplate }) => {
       setExercises(editTemplate.exercises);
       setTemplateID(editTemplate._id);
     }
-  }, []);
+  }, [editTemplate]);
 
   const getExerciseInput = (exerciseInput) => {
     setExercises((prevExercises) => [
@@ -51,7 +51,7 @@ const TemplateForm = ({ refetchTemplates, editTemplate }) => {
     try {
       const response = await postTemplateService(templateData);
       if (response == 201) {
-        console.log("Template added succesfully!S");
+        console.log("Template added succesfully!");
       }
     } catch (error) {
       console.error("Error when trying to post template");
@@ -71,12 +71,19 @@ const TemplateForm = ({ refetchTemplates, editTemplate }) => {
       return;
     }
 
+    // Removing _id from exercises, before posting
+    const transformedExercises = exercises.map((exercise) => ({
+      exercise_name: exercise["exercise_name"],
+    }));
+
     const templateData = {
       name: templateName,
-      exercises,
+      exercises: transformedExercises,
     };
 
     try {
+      console.log(templateID);
+      console.log(templateData);
       const response = await updateTemplateService(templateID, templateData);
       if (response == 200) {
         console.log("Template updated succesfully!");
