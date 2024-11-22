@@ -9,7 +9,7 @@ import {
   updateTemplateService,
 } from "../../../services/templateServices";
 
-const TemplateForm = ({ refetchTemplates, editTemplate, setEditTemplate }) => {
+const TemplateForm = ({ refetchTemplates, editTemplate }) => {
   const [exercises, setExercises] = useState([]);
   const [templateName, setTemplateName] = useState("");
   const [templateID, setTemplateID] = useState("");
@@ -84,6 +84,10 @@ const TemplateForm = ({ refetchTemplates, editTemplate, setEditTemplate }) => {
     } catch (error) {
       console.error("Error when trying to update template");
     }
+
+    refetchTemplates();
+    setExercises([]);
+    setTemplateName("");
   };
 
   return (
@@ -112,13 +116,6 @@ const TemplateForm = ({ refetchTemplates, editTemplate, setEditTemplate }) => {
           clickFunction={updateTemplateButtonHandler}
         />
       )}
-
-      {/* <button
-        className="bg-red-500 absolute bottom-0"
-        onClick={() => setShowForm(false)}
-      >
-        See templates
-      </button> */}
     </TemplatesSectionWrapper>
   );
 };

@@ -11,7 +11,7 @@ import TemplatesSectionWrapper from "./TemplatesSectionWrapper";
 const WorkoutTemplates = () => {
   const [templates, setTemplates] = useState([]);
   const [showForm, setShowForm] = useState(false);
-  const [editTemplate, setEditTemplate] = useState("false");
+  const [editTemplate, setEditTemplate] = useState("");
 
   const fetchTemplates = async () => {
     try {
@@ -39,10 +39,12 @@ const WorkoutTemplates = () => {
     }
   };
 
-  const handleEdit = async (template) => {
+  const handleEdit = (template) => {
     setEditTemplate(template);
     setShowForm(true);
   };
+
+ 
 
   return (
     <div className="bg-red-300 w-96 h-96 m-auto relative flex flex-col">
@@ -59,14 +61,14 @@ const WorkoutTemplates = () => {
       </div>
       {!showForm ? (
         <TemplatesSectionWrapper>
-          <ul>
+          <ul className="px-1">
             {!templates ? (
               <p className="text-center py-2 text-sm">No templates found</p>
             ) : (
               templates.map((template) => {
                 return (
                   <li
-                    className="bg-red-400 my-2 px-3 flex justify-between"
+                    className="bg-red-400 my-2 px-3 flex justify-between rounded-md"
                     key={template._id}
                   >
                     {template.name}
@@ -90,20 +92,10 @@ const WorkoutTemplates = () => {
         </TemplatesSectionWrapper>
       ) : (
         <TemplateForm
-          setShowForm={setShowForm}
           refetchTemplates={fetchTemplates}
           editTemplate={editTemplate}
-          setEditTemplate={setEditTemplate}
         />
       )}
-      {/* <div className="h-10 w-full absolute bottom-0 transform bg-red-300 flex justify-center items-center">
-        <button
-          className="px-4 py-1 bg-red-500 rounded-2xl"
-          onClick={() => setShowForm(!showForm)}
-        >
-          Add template
-        </button>
-      </div> */}
     </div>
   );
 };
