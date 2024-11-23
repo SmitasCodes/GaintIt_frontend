@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  deleteTemplateService,
   getAllTemplatesService,
 } from "../../services/templateServices";
 import TemplateForm from "./TemplateForm/TemplateForm";

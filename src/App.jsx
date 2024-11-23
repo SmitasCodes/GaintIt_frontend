@@ -1,4 +1,3 @@
-import Exercises from "./components/Exercises";
 import WorkoutTemplates from "./components/Templates/WorkoutTemplates";
 
 function App() {
