@@ -13,6 +13,7 @@ const loginService = async ({ username, password }) => {
     return response;
   } catch (error) {
     console.error("Error when posting template:", error);
+    return error;
   }
 };
 

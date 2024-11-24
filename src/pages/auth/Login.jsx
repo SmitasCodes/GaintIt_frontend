@@ -4,12 +4,18 @@ import { loginService } from "../../services/authServices";
 const Login = () => {
   const [username, setInput] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
       const loginUser = await loginService({ username, password });
+      if (loginUser.status == 200) {
+        console.log("User logged in");
+      } else {
+        setError(loginUser.response.data.message);
+      }
     } catch (error) {
       console.error("Error when trying to login", error);
     }
