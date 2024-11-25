@@ -1,6 +1,6 @@
 import axios from "axios";
 
-// Service to login users
+// ================================== Login service ==================================
 const loginService = async ({ username, password }) => {
   console.log(username, password);
 
