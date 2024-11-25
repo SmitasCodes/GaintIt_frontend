@@ -2,13 +2,17 @@ import axios from "axios";
 
 // ================================== Login service ==================================
 const loginService = async ({ username, password }) => {
-  console.log(username, password);
-
   try {
     const response = await axios.post(`http://localhost:8787/api/users/login`, {
       username,
       password,
     });
+
+    if (response.data) {
+      const { token, username } = response.data;
+      const user = { token, username };
+      localStorage.setItem("user", JSON.stringify(user));
+    }
 
     return response;
   } catch (error) {

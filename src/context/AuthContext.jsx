@@ -1,8 +1,8 @@
-import { useContext, useState, createContext } from "react";
+import { useContext, useState, createContext, useEffect } from "react";
 
-export const AuthContext = createContext();
+const AuthContext = createContext();
 
-export const useAuth = () => {
+const useAuth = () => {
   return useContext(AuthContext) || {};
 };
 
@@ -16,28 +16,34 @@ const AuthProvider = ({ children }) => {
 
     if (userObj) {
       setIsLoggedIn(true);
-      setUsername(user.username);
+      setUsername(userObj.username);
     } else {
       setIsLoggedIn(false);
-      setUsername(user.username);
+      setUsername(null);
     }
-
-    // useEffect(() => {
-    //   checkAuthStatus();
-    // }, [isLoggedIn]);
-
-    return (
-      <AuthContext.Provider
-        value={{
-          isLoggedIn,
-          username,
-          checkAuth,
-        }}
-      >
-        {children}
-      </AuthContext.Provider>
-    );
   };
+
+  const logout = () => {
+    localStorage.removeItem("user");
+    checkAuth();
+  };
+
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
+
+  return (
+    <AuthContext.Provider
+      value={{
+        isLoggedIn,
+        username,
+        checkAuth,
+        logout,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
-export { AuthProvider };
+export { AuthProvider, useAuth };

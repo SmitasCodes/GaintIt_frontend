@@ -1,18 +1,29 @@
 import React, { useState } from "react";
 import { loginService } from "../../services/authServices";
+import { useAuth } from "../../context/AuthContext";
 
 const Login = () => {
   const [username, setInput] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const { checkAuth } = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
+      if (!username) {
+        setError("Username is required.");
+        return;
+      } else if (!password) {
+        setError("Password is required.");
+        return;
+      }
+
       const loginUser = await loginService({ username, password });
       if (loginUser.status == 200) {
-        console.log("User logged in");
+        checkAuth();
+        console.log("User logged in!");
       } else {
         setError(loginUser.response.data.message);
       }
@@ -26,12 +37,13 @@ const Login = () => {
       <h2 className="text-center font-bold text-2xl pb-4 tracking-wider">
         Login
       </h2>
-      <form>
+      <form onSubmit={handleLogin}>
         <div className="pb-2">
           <label className="inline-block pb-1">Username</label>
           <input
             className="w-full p-1 rounded-md"
             value={username}
+            required
             onChange={(e) => setInput(e.target.value)}
           />
         </div>
@@ -39,8 +51,9 @@ const Login = () => {
         <div className="pb-2">
           <label className="inline-block pb-1">Password</label>
           <input
-            className="w-full p-1 rounded-md"
+            className="w-full p-1 rounded-md border-2"
             value={password}
+            required
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
