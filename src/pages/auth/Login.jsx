@@ -12,15 +12,15 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    try {
-      if (!username) {
-        setError("Username is required.");
-        return;
-      } else if (!password) {
-        setError("Password is required.");
-        return;
-      }
+    if (!username) {
+      setError("Username is required.");
+      return;
+    } else if (!password) {
+      setError("Password is required.");
+      return;
+    }
 
+    try {
       const loginUser = await loginService({ username, password });
       if (loginUser.status == 200) {
         checkAuth();
