@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { loginService } from "../../services/authServices";
 import { useAuth } from "../../context/AuthContext";
+import Form from "../../components/Form";
 
 const Login = () => {
-  const [username, setInput] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const { checkAuth } = useAuth();
@@ -37,35 +38,11 @@ const Login = () => {
       <h2 className="text-center font-bold text-2xl pb-4 tracking-wider">
         Login
       </h2>
-      <form onSubmit={handleLogin}>
-        <div className="pb-2">
-          <label className="inline-block pb-1">Username</label>
-          <input
-            className="w-full p-1 rounded-md"
-            value={username}
-            required
-            onChange={(e) => setInput(e.target.value)}
-          />
-        </div>
-
-        <div className="pb-2">
-          <label className="inline-block pb-1">Password</label>
-          <input
-            className="w-full p-1 rounded-md border-2"
-            value={password}
-            required
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-
+      {/* <form onSubmit={handleLogin}>
         {<p className="text-red-600">{error}</p>}
 
         <div className="flex justify-around mt-2">
-          <button
-            className="px-5 py-1 bg-sky-400 rounded-xl"
-            onClick={handleLogin}
-            type="submit"
-          >
+          <button className="px-5 py-1 bg-sky-400 rounded-xl" type="submit">
             Login
           </button>
           <button className="px-5 py-1 bg-sky-400 rounded-xl">Sign Up</button>
@@ -80,7 +57,40 @@ const Login = () => {
         <button className="px-6 py-1 bg-sky-600 rounded-3xl block mx-auto my-1">
           Try demo
         </button>
-      </form>
+      </form> */}
+      <Form
+        fields={[
+          {
+            label: "Username",
+            labelStyle: "inline-block pb-1",
+            style: "w-full p-1 rounded-md",
+            value: username,
+            onChange: (e) => setUsername(e.target.value),
+            type: "text",
+          },
+          {
+            label: "Password",
+            labelStyle: "inline-block pb-1",
+            style: "w-full p-1 rounded-md",
+            value: password,
+            onChange: (e) => setPassword(e.target.value),
+            type: "password",
+            autocomplete: "no",
+          },
+        ]}
+        onSubmit={handleLogin}
+        buttons={[
+          {
+            text: "Login",
+            style: "px-5 py-1 bg-sky-400 rounded-xl",
+            type: "submit",
+          },
+          {
+            text: "Sign Up",
+            style: "px-5 py-1 bg-sky-400 rounded-xl",
+          },
+        ]}
+      />
     </div>
   );
 };
