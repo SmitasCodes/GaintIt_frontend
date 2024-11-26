@@ -21,7 +21,7 @@ const loginService = async ({ username, password }) => {
   }
 };
 
-// ================================== Sign up service ==================================
+// ================================== Sign up service =================================
 const signupService = async ({ email, username, password }) => {
   try {
     const response = await axios.post(`http://localhost:8787/api/users/`, {

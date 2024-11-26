@@ -7,8 +7,16 @@ const useAuth = () => {
 };
 
 const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(null);
-  const [username, setUsername] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    const userString = localStorage.getItem("user");
+    return !!userString;
+  });
+
+  const [username, setUsername] = useState(() => {
+    const userString = localStorage.getItem("user");
+    const userObj = JSON.parse(userString);
+    return userObj?.username || null;
+  });
 
   const checkAuth = () => {
     const userString = localStorage.getItem("user");
