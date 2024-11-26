@@ -2,14 +2,26 @@ import React from "react";
 import Input from "./Input";
 import Button from "./Button";
 
-const Form = ({ fields, onSubmit, buttons }) => {
+const Form = ({
+  fields,
+  onSubmit,
+  buttons,
+  demoButton,
+  error,
+  title,
+  style,
+}) => {
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={onSubmit} className={style}>
+      <h2 className={title.style}>{title.title}</h2>
       {fields.map((field, index) => {
         return (
           <div className="pb-2" key={index}>
-            <label className={field.labelStyle}>{field.label}</label>
+            <label className={field.labelStyle} htmlFor={`input-${index}`}>
+              {field.label}
+            </label>
             <Input
+              id={`input-${index}`}
               style={field.style}
               value={field.value}
               type={field.type}
@@ -19,16 +31,29 @@ const Form = ({ fields, onSubmit, buttons }) => {
           </div>
         );
       })}
-      {buttons.map((button, index) => {
-        return (
-          <Button
-            key={index}
-            style={button.style}
-            text={button.text}
-            type={button.type}
-          />
-        );
-      })}
+
+      {error ? <p className="text-red-500">{error}</p> : ""}
+
+      <div className="flex justify-around mt-2">
+        {buttons.map((button, index) => {
+          return (
+            <Button
+              key={index}
+              style={button.style}
+              text={button.text}
+              type={button.type}
+            />
+          );
+        })}
+      </div>
+
+      <div className="flex items-center my-2">
+        <div className="flex-grow border-t border-gray-500"></div>
+        <span className="px-4 text-gray-800 text-sm">or</span>
+        <div className="flex-grow border-t border-gray-500"></div>
+      </div>
+
+      <Button style={demoButton.style} text={demoButton.text} />
     </form>
   );
 };
