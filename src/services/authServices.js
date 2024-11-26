@@ -22,9 +22,9 @@ const loginService = async ({ username, password }) => {
 };
 
 // ================================== Sign up service =================================
-const signupService = async ({ email, username, password }) => {
+const signupService = async ({ collection, email, username, password }) => {
   try {
-    const response = await axios.post(`http://localhost:8787/api/users/`, {
+    const response = await axios.post(`http://localhost:8787/api/${collection}/`, {
       email,
       username,
       password,

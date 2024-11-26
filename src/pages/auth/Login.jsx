@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { loginService } from "../../services/authServices";
 import { useAuth } from "../../context/AuthContext";
 import Form from "../../components/Form";
+import { createDemo } from "./createDemo";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -33,6 +34,10 @@ const Login = () => {
     }
   };
 
+  const handleDemo = () => {
+    createDemo({checkAuth});
+  };
+
   return (
     <Form
       style="w-80 bg-sky-200 rounded-3xl p-4 border-2 border-sky-500"
@@ -40,6 +45,7 @@ const Login = () => {
         title: "Login",
         style: "text-center font-bold text-2xl pb-4 tracking-wider",
       }}
+      onSubmit={handleLogin}
       fields={[
         {
           label: "Username",
@@ -59,7 +65,6 @@ const Login = () => {
           autocomplete: "no",
         },
       ]}
-      onSubmit={handleLogin}
       error={error}
       button={{
         text: "Login",
@@ -74,6 +79,8 @@ const Login = () => {
       demoButton={{
         style: "px-6 py-1 bg-sky-600 rounded-3xl block mx-auto my-1",
         text: "Try demo",
+        type: "button",
+        onClick: handleDemo,
       }}
     />
   );

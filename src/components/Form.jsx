@@ -10,7 +10,7 @@ const Form = ({
   error,
   title,
   style,
-  navigationAnchor
+  navigationAnchor,
 }) => {
   return (
     <form onSubmit={onSubmit} className={style}>
@@ -48,7 +48,12 @@ const Form = ({
         <div className="flex-grow border-t border-gray-500"></div>
       </div>
 
-      <Button style={demoButton.style} text={demoButton.text} />
+      <Button
+        style={demoButton.style}
+        text={demoButton.text}
+        type={demoButton.type}
+        onClick={demoButton.onClick}
+      />
     </form>
   );
 };

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Form from "../../components/Form";
 import { useAuth } from "../../context/AuthContext";
 import { signupService } from "../../services/authServices";
+import { createDemo } from "./createDemo";
 
 const Signup = () => {
   const [username, setUsername] = useState("");
@@ -12,6 +13,7 @@ const Signup = () => {
 
   const handleSignup = async (e) => {
     e.preventDefault();
+    const collection = "users";
 
     if (!email) {
       setError("Email is required.");
@@ -25,7 +27,12 @@ const Signup = () => {
     }
 
     try {
-      const signupUser = await signupService({ email, username, password });
+      const signupUser = await signupService({
+        email,
+        username,
+        password,
+        collection,
+      });
       if (signupUser.status == 201) {
         checkAuth();
         console.log("User signed up!");
@@ -35,6 +42,10 @@ const Signup = () => {
     } catch (error) {
       console.error("Error when trying to sign up", error);
     }
+  };
+
+  const handleDemo = () => {
+    createDemo({ checkAuth });
   };
 
   return (
@@ -73,13 +84,11 @@ const Signup = () => {
       ]}
       onSubmit={handleSignup}
       error={error}
-      button={
-        {
-          text: "Sign up",
-          style: "px-5 py-1 bg-sky-400 rounded-xl",
-          type: "submit",
-        }
-      }
+      button={{
+        text: "Sign up",
+        style: "px-5 py-1 bg-sky-400 rounded-xl",
+        type: "submit",
+      }}
       navigationAnchor={{
         text: "Login",
         href: "/login",
@@ -88,6 +97,8 @@ const Signup = () => {
       demoButton={{
         style: "px-6 py-1 bg-sky-600 rounded-3xl block mx-auto my-1",
         text: "Try demo",
+        type: "button",
+        onClick: handleDemo,
       }}
     />
   );
