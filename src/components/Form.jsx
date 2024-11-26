@@ -5,11 +5,12 @@ import Button from "./Button";
 const Form = ({
   fields,
   onSubmit,
-  buttons,
+  button,
   demoButton,
   error,
   title,
   style,
+  navigationAnchor
 }) => {
   return (
     <form onSubmit={onSubmit} className={style}>
@@ -35,16 +36,10 @@ const Form = ({
       {error ? <p className="text-red-500">{error}</p> : ""}
 
       <div className="flex justify-around mt-2">
-        {buttons.map((button, index) => {
-          return (
-            <Button
-              key={index}
-              style={button.style}
-              text={button.text}
-              type={button.type}
-            />
-          );
-        })}
+        <Button style={button.style} text={button.text} type={button.type} />
+        <a href={navigationAnchor.href} className={navigationAnchor.style}>
+          {navigationAnchor.text}
+        </a>
       </div>
 
       <div className="flex items-center my-2">

@@ -61,17 +61,16 @@ const Login = () => {
       ]}
       onSubmit={handleLogin}
       error={error}
-      buttons={[
-        {
-          text: "Login",
-          style: "px-5 py-1 bg-sky-400 rounded-xl",
-          type: "submit",
-        },
-        {
-          text: "Sign Up",
-          style: "px-5 py-1 bg-sky-400 rounded-xl",
-        },
-      ]}
+      button={{
+        text: "Login",
+        style: "px-5 py-1 bg-sky-400 rounded-xl",
+        type: "submit",
+      }}
+      navigationAnchor={{
+        text: "Sign up",
+        href: "/signup",
+        style: "px-5 py-1 bg-sky-400 rounded-xl",
+      }}
       demoButton={{
         style: "px-6 py-1 bg-sky-600 rounded-3xl block mx-auto my-1",
         text: "Try demo",
