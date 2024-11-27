@@ -11,7 +11,7 @@ function App() {
   console.log(isLoggedIn)
 
   return (
-    <div className="bg-sky-100 w-full h-screen flex justify-center items-center">
+    <div className="bg-neutral w-full h-screen flex justify-center items-center">
       <BrowserRouter>
         <Routes>
           <Route

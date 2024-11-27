@@ -33,7 +33,7 @@ const Form = ({
         );
       })}
 
-      {error ? <p className="text-red-500">{error}</p> : ""}
+      {error ? <p className="text-primary">{error}</p> : ""}
 
       <div className="flex justify-around mt-2">
         <Button style={button.style} text={button.text} type={button.type} />

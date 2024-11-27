@@ -8,6 +8,8 @@ const loginService = async ({ username, password }) => {
       password,
     });
 
+    console.log(response)
+
     if (response.data) {
       const { token, username } = response.data;
       const user = { token, username };
@@ -24,11 +26,14 @@ const loginService = async ({ username, password }) => {
 // ================================== Sign up service =================================
 const signupService = async ({ collection, email, username, password }) => {
   try {
-    const response = await axios.post(`http://localhost:8787/api/${collection}/`, {
-      email,
-      username,
-      password,
-    });
+    const response = await axios.post(
+      `http://localhost:8787/api/${collection}/`,
+      {
+        email,
+        username,
+        password,
+      }
+    );
 
     if (response.data) {
       const { token, username } = response.data;
