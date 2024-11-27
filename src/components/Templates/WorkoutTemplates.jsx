@@ -24,7 +24,7 @@ const WorkoutTemplates = () => {
   }, []);
 
   return (
-    <div className="h-[calc(50%-8px)] w-[50%] rounded-xl bg-red-300 relative flex flex-col">
+    <div className="h-[calc(50%-8px)] w-[50%] rounded-xl relative flex flex-col">
       <div className="flex h-8 justify-center items-center ">
         <a
           className="border-red-900 border-r-2 pr-2 cursor-pointer"
