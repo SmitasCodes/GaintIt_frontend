@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
-import {
-  getAllTemplatesService,
-} from "../../services/templateServices";
+import { getAllTemplatesService } from "../../services/templateServices";
 import TemplateForm from "./TemplateForm/TemplateForm";
 import TemplatesList from "./TemplatesList";
+import { useAuth } from "../../context/AuthContext";
 
 const WorkoutTemplates = () => {
   const [templates, setTemplates] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editTemplate, setEditTemplate] = useState("");
+  const { token } = useAuth();
 
   const fetchTemplates = async () => {
     try {
-      const templatesRes = await getAllTemplatesService();
+      const templatesRes = await getAllTemplatesService(`Bearer ${token}`);
       setTemplates(templatesRes);
     } catch (error) {
       console.error("Error when fetching templates: ", error);

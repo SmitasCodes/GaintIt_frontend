@@ -8,6 +8,8 @@ import { useAuth } from "./context/AuthContext";
 function App() {
   const { isLoggedIn } = useAuth();
 
+  console.log(isLoggedIn)
+
   return (
     <div className="bg-sky-100 w-full h-screen flex justify-center items-center">
       <BrowserRouter>

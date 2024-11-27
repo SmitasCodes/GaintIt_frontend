@@ -1,4 +1,4 @@
-import { useContext, useState, createContext, useEffect } from "react";
+import { useContext, useState, createContext, useEffect, useCallback } from "react";
 
 const AuthContext = createContext();
 
@@ -7,29 +7,15 @@ const useAuth = () => {
 };
 
 const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+  const [user, setUser] = useState(() => {
     const userString = localStorage.getItem("user");
-    return !!userString;
+    return userString ? JSON.parse(userString) : null;
   });
 
-  const [username, setUsername] = useState(() => {
+  const checkAuth = useCallback(() => {
     const userString = localStorage.getItem("user");
-    const userObj = JSON.parse(userString);
-    return userObj?.username || null;
-  });
-
-  const checkAuth = () => {
-    const userString = localStorage.getItem("user");
-    const userObj = JSON.parse(userString);
-
-    if (userObj) {
-      setIsLoggedIn(true);
-      setUsername(userObj.username);
-    } else {
-      setIsLoggedIn(false);
-      setUsername(null);
-    }
-  };
+    setUser(userString ? JSON.parse(userString) : null);
+  }, []);
 
   const logout = () => {
     localStorage.removeItem("user");
@@ -43,8 +29,9 @@ const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
-        isLoggedIn,
-        username,
+        isLoggedIn: !!user,
+        username: user?.username || null,
+        token: user?.token || null,
         checkAuth,
         logout,
       }}

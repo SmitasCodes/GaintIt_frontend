@@ -6,6 +6,7 @@ import {
   deleteTemplateService,
   getAllTemplatesService,
 } from "../../services/templateServices";
+import { useAuth } from "../../context/AuthContext";
 
 const TemplatesList = ({
   templates,
@@ -14,6 +15,8 @@ const TemplatesList = ({
   editTemplate,
   setEditTemplate,
 }) => {
+  const { token } = useAuth();
+
   useEffect(() => {
     setEditTemplate("");
   }, [editTemplate]);
@@ -22,8 +25,8 @@ const TemplatesList = ({
     console.log("Deleting template with ID:", templateId);
 
     try {
-      await deleteTemplateService(templateId);
-      const templatesRes = await getAllTemplatesService();
+      await deleteTemplateService(templateId, `Bearer ${token}`);
+      const templatesRes = await getAllTemplatesService(`Bearer ${token}`);
       console.log("Template deleted succesfully");
       setTemplates(templatesRes);
     } catch (error) {

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import TemplatesSectionWrapper from "../TemplatesSectionWrapper";
 import TemplateSubmitButton from "../TemplateSubmitButton";
 import AddExerciseInput from "./AddExerciseInput";
@@ -8,11 +8,13 @@ import {
   postTemplateService,
   updateTemplateService,
 } from "../../../services/templateServices";
+import { useAuth } from "../../../context/AuthContext";
 
 const TemplateForm = ({ refetchTemplates, editTemplate, setEditTemplate }) => {
   const [exercises, setExercises] = useState([]);
   const [templateName, setTemplateName] = useState("");
   const [templateID, setTemplateID] = useState("");
+  const { token } = useAuth();
 
   useEffect(() => {
     if (editTemplate) {
@@ -49,7 +51,10 @@ const TemplateForm = ({ refetchTemplates, editTemplate, setEditTemplate }) => {
     };
 
     try {
-      const response = await postTemplateService(templateData);
+      const response = await postTemplateService(
+        templateData,
+        `Bearer ${token}`
+      );
       if (response == 201) {
         console.log("Template added succesfully!");
       }
@@ -82,9 +87,7 @@ const TemplateForm = ({ refetchTemplates, editTemplate, setEditTemplate }) => {
     };
 
     try {
-      console.log(templateID);
-      console.log(templateData);
-      const response = await updateTemplateService(templateID, templateData);
+      const response = await updateTemplateService(templateID, templateData, `Bearer ${token}`);
       if (response == 200) {
         console.log("Template updated succesfully!");
       }
