@@ -4,6 +4,7 @@ import Signup from "./pages/auth/Signup";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoutes from "./ProtectedRoutes";
 import { useAuth } from "./context/AuthContext";
+import MainWindow from "./MainWIndow"
 
 function App() {
   const { isLoggedIn } = useAuth();
@@ -23,7 +24,7 @@ function App() {
             path="/signup"
           />
           <Route element={<ProtectedRoutes />}>
-            <Route element={<WorkoutTemplates />} path="/" />
+            <Route element={<MainWindow />} path="/" />
           </Route>
         </Routes>
       </BrowserRouter>
