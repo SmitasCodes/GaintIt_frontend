@@ -87,7 +87,7 @@ const Signup = () => {
       error={error}
       button={{
         text: "Sign up",
-        style: "px-5 py-1 bg-sky-400 rounded-xl bg-primary text-neutral",
+        style: "px-5 py-1 rounded-xl bg-primary text-neutral",
         type: "submit",
       }}
       navigationAnchor={{
