@@ -4,12 +4,10 @@ import Signup from "./pages/auth/Signup";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoutes from "./ProtectedRoutes";
 import { useAuth } from "./context/AuthContext";
-import MainWindow from "./MainWIndow"
+import MainWindow from "./MainWIndow";
 
 function App() {
   const { isLoggedIn } = useAuth();
-
-  console.log(isLoggedIn)
 
   return (
     <div className="bg-neutral w-full h-screen flex justify-center items-center">

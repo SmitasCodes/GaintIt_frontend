@@ -9,12 +9,14 @@ import {
   updateTemplateService,
 } from "../../../services/templateServices";
 import { useAuth } from "../../../context/AuthContext";
+import { useTemplates } from "../../../context/TemplateContext";
 
-const TemplateForm = ({ refetchTemplates, editTemplate, setEditTemplate }) => {
+const TemplateForm = ({ editTemplate, setEditTemplate }) => {
   const [exercises, setExercises] = useState([]);
   const [templateName, setTemplateName] = useState("");
   const [templateID, setTemplateID] = useState("");
   const { token } = useAuth();
+  const { fetchTemplates } = useTemplates();
 
   useEffect(() => {
     if (editTemplate) {
@@ -62,7 +64,7 @@ const TemplateForm = ({ refetchTemplates, editTemplate, setEditTemplate }) => {
       console.error("Error when trying to post template");
     }
 
-    refetchTemplates();
+    fetchTemplates();
     setExercises([]);
     setTemplateName("");
   };
@@ -87,7 +89,11 @@ const TemplateForm = ({ refetchTemplates, editTemplate, setEditTemplate }) => {
     };
 
     try {
-      const response = await updateTemplateService(templateID, templateData, `Bearer ${token}`);
+      const response = await updateTemplateService(
+        templateID,
+        templateData,
+        `Bearer ${token}`
+      );
       if (response == 200) {
         console.log("Template updated succesfully!");
       }
@@ -95,7 +101,7 @@ const TemplateForm = ({ refetchTemplates, editTemplate, setEditTemplate }) => {
       console.error("Error when trying to update template");
     }
 
-    refetchTemplates();
+    fetchTemplates();
     setExercises([]);
     setTemplateName("");
   };
