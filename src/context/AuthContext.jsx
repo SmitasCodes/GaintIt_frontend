@@ -1,4 +1,10 @@
-import { useContext, useState, createContext, useEffect, useCallback } from "react";
+import {
+  useContext,
+  useState,
+  createContext,
+  useEffect,
+  useCallback,
+} from "react";
 
 const AuthContext = createContext();
 
@@ -19,7 +25,7 @@ const AuthProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem("user");
-    checkAuth();
+    setUser(null);
   };
 
   useEffect(() => {

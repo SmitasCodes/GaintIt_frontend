@@ -26,7 +26,6 @@ const TemplateProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    console.log("Changegs");
     fetchTemplates();
   }, [token]);
 

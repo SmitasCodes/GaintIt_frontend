@@ -7,15 +7,11 @@ import {
   getAllTemplatesService,
 } from "../../services/templateServices";
 import { useAuth } from "../../context/AuthContext";
+import { useTemplates } from "../../context/TemplateContext";
 
-const TemplatesList = ({
-  templates,
-  setTemplates,
-  setShowForm,
-  editTemplate,
-  setEditTemplate,
-}) => {
+const TemplatesList = ({ setShowForm, editTemplate, setEditTemplate }) => {
   const { token } = useAuth();
+  const { templates, setTemplates } = useTemplates();
 
   useEffect(() => {
     setEditTemplate("");
@@ -42,7 +38,7 @@ const TemplatesList = ({
   return (
     <TemplatesSectionWrapper>
       <ul className="px-1">
-        {!templates ? (
+        {!templates.length ? (
           <p className="text-center py-2 text-sm">No templates found</p>
         ) : (
           templates.map((template) => {

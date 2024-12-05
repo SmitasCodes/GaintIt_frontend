@@ -5,8 +5,8 @@ import Form from "../../components/Form";
 import { createDemo } from "./createDemo";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("usermain");
+  const [password, setPassword] = useState("usermain");
   const [error, setError] = useState("");
   const { checkAuth } = useAuth();
 

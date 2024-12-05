@@ -10,8 +10,6 @@ const Records = () => {
 
   const { templates } = useTemplates();
 
-  console.log(templates);
-
   return (
     <div className="flex-grow flex flex-col w-[calc(50%-8px)] rounded-xl border-2 border-accent bg-secondary">
       <h2 className="py-1.5 text-center text-xl text-neutral">Records</h2>

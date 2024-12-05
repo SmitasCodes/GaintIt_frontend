@@ -1,29 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { getAllTemplatesService } from "../../services/templateServices";
 import TemplateForm from "./TemplateForm/TemplateForm";
 import TemplatesList from "./TemplatesList";
-import { useAuth } from "../../context/AuthContext";
 import { useTemplates } from "../../context/TemplateContext";
 
 const WorkoutTemplates = () => {
-  // const [templates, setTemplates] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editTemplate, setEditTemplate] = useState("");
-  const { token } = useAuth();
-  const { templates, setTemplates } = useTemplates();
-
-  // const fetchTemplates = async () => {
-  //   try {
-  //     const templatesRes = await getAllTemplatesService(`Bearer ${token}`);
-  //     setTemplates(templatesRes);
-  //   } catch (error) {
-  //     console.error("Error when fetching templates: ", error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchTemplates();
-  // }, []);
 
   return (
     <div className="h-[calc(50%-8px)] w-[50%] rounded-xl relative flex flex-col">
@@ -40,8 +22,6 @@ const WorkoutTemplates = () => {
       </div>
       {!showForm ? (
         <TemplatesList
-          templates={templates}
-          setTemplates={setTemplates}
           setShowForm={setShowForm}
           setEditTemplate={setEditTemplate}
           editTemplate={editTemplate}
