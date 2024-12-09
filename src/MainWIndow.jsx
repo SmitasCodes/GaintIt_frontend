@@ -9,7 +9,6 @@ const MainWIndow = () => {
       <Profile />
       <WorkoutTemplates/>
       <Records/>
-
     </div>
   );
 };

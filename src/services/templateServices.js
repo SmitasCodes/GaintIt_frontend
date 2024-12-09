@@ -73,10 +73,10 @@ const deleteTemplateService = async (id, token) => {
 };
 
 // Service to get all exercises of template
-// const getExercisesService = async () => {
+// const getExercisesService = async (token) => {
 //   try {
 //     const response = await axios.get(
-//       "http://localhost:8787/api/workout-template/673b50c542ff921043e80f53/exercises",
+//       `http://localhost:8787/api/workout-template/${token}/exercises`,
 //       {
 //         headers: {
 //           Authorization:

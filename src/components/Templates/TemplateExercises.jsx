@@ -10,8 +10,8 @@ const TemplateExercises = ({ exercises, setExercises }) => {
 
   return (
     <ul>
-      {!exercises ? (
-        <p></p>
+      {!exercises.length ? (
+        <p className="text-center mb-3">No exercises have been added yet.</p>
       ) : (
         exercises.map((exercise) => {
           return (
