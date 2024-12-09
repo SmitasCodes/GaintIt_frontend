@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import TemplatesSectionWrapper from "../TemplatesSectionWrapper";
-import TemplateSubmitButton from "../TemplateSubmitButton";
+import TemplateSubmitWrapper from "../TemplateSubmitWrapper";
 import AddExerciseInput from "./AddExerciseInput";
 import TemplateExercises from "../TemplateExercises";
 import { v4 as uuidv4 } from "uuid";
@@ -11,7 +11,7 @@ import {
 import { useAuth } from "../../../context/AuthContext";
 import { useTemplates } from "../../../context/TemplateContext";
 
-const TemplateForm = ({ editTemplate, setEditTemplate }) => {
+const TemplateForm = ({ editTemplate }) => {
   const [exercises, setExercises] = useState([]);
   const [templateName, setTemplateName] = useState("");
   const [templateID, setTemplateID] = useState("");
@@ -33,7 +33,7 @@ const TemplateForm = ({ editTemplate, setEditTemplate }) => {
     ]);
   };
 
-  const addTemplateButtonHandler = async () => {
+  const submitTemplateHandler = async () => {
     if (!templateName) {
       console.log("Please enter template name");
       return;
@@ -53,52 +53,27 @@ const TemplateForm = ({ editTemplate, setEditTemplate }) => {
     };
 
     try {
-      const response = await postTemplateService(
-        templateData,
-        `Bearer ${token}`
-      );
-      if (response == 201) {
-        console.log("Template added succesfully!");
+      const response = !editTemplate
+        ? await postTemplateService(templateData, `Bearer ${token}`)
+        : await updateTemplateService(
+            templateID,
+            templateData,
+            `Bearer ${token}`
+          );
+
+      if (
+        (!editTemplate && response == 201) ||
+        (editTemplate && response == 200)
+      ) {
+        console.log(
+          `Template ${!editTemplate ? "added" : "updated"} succesfully!`
+        );
       }
     } catch (error) {
-      console.error("Error when trying to post template");
-    }
-
-    fetchTemplates();
-    setExercises([]);
-    setTemplateName("");
-  };
-
-  const updateTemplateButtonHandler = async () => {
-    if (!templateName) {
-      console.log("Please enter template name");
-      return;
-    } else if (!exercises.length) {
-      console.log("Please add some exercises");
-      return;
-    }
-
-    // Removing _id from exercises, before posting
-    const transformedExercises = exercises.map((exercise) => ({
-      exercise_name: exercise["exercise_name"],
-    }));
-
-    const templateData = {
-      name: templateName,
-      exercises: transformedExercises,
-    };
-
-    try {
-      const response = await updateTemplateService(
-        templateID,
-        templateData,
-        `Bearer ${token}`
+      console.error(
+        `Error when trying to ${!editTemplate ? "add" : "update"} template`,
+        error
       );
-      if (response == 200) {
-        console.log("Template updated succesfully!");
-      }
-    } catch (error) {
-      console.error("Error when trying to update template");
     }
 
     fetchTemplates();
@@ -121,17 +96,10 @@ const TemplateForm = ({ editTemplate, setEditTemplate }) => {
         <TemplateExercises exercises={exercises} setExercises={setExercises} />
         <AddExerciseInput getInput={getExerciseInput} />
       </form>
-      {!editTemplate ? (
-        <TemplateSubmitButton
-          buttonText={"Submit Template"}
-          clickFunction={addTemplateButtonHandler}
-        />
-      ) : (
-        <TemplateSubmitButton
-          buttonText={"Update Template"}
-          clickFunction={updateTemplateButtonHandler}
-        />
-      )}
+      <TemplateSubmitWrapper
+        buttonText={editTemplate ? "Update Template" : "Add Template"}
+        clickFunction={submitTemplateHandler}
+      />
     </TemplatesSectionWrapper>
   );
 };

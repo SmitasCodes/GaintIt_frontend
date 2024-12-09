@@ -15,7 +15,11 @@ const TemplateProvider = ({ children }) => {
   const fetchTemplates = async () => {
     try {
       const templatesRes = await getAllTemplatesService(`Bearer ${token}`);
-      setTemplates(templatesRes);
+      if (!templatesRes) {
+        setTemplates([]);
+      } else {
+        setTemplates(templatesRes);
+      }
     } catch (error) {
       console.error("Error when fetching templates: ", error);
     }
@@ -26,7 +30,9 @@ const TemplateProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    fetchTemplates();
+    if (token) {
+      fetchTemplates();
+    }
   }, [token]);
 
   return (

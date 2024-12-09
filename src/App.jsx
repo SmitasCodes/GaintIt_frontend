@@ -1,4 +1,3 @@
-import WorkoutTemplates from "./components/Templates/WorkoutTemplates";
 import Login from "./pages/auth/Login";
 import Signup from "./pages/auth/Signup";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";

@@ -8,8 +8,6 @@ const loginService = async ({ username, password }) => {
       password,
     });
 
-    console.log(response)
-
     if (response.data) {
       const { token, username } = response.data;
       const user = { token, username };

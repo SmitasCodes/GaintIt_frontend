@@ -9,22 +9,20 @@ import {
 import { useAuth } from "../../context/AuthContext";
 import { useTemplates } from "../../context/TemplateContext";
 
-const TemplatesList = ({ setShowForm, editTemplate, setEditTemplate }) => {
+const TemplatesList = ({ setShowForm, setEditTemplate }) => {
   const { token } = useAuth();
   const { templates, setTemplates } = useTemplates();
 
   useEffect(() => {
     setEditTemplate("");
-  }, [editTemplate]);
+  }, []);
 
   const handleDelete = async (templateId) => {
-    console.log("Deleting template with ID:", templateId);
-
     try {
       await deleteTemplateService(templateId, `Bearer ${token}`);
       const templatesRes = await getAllTemplatesService(`Bearer ${token}`);
-      console.log("Template deleted succesfully");
       setTemplates(templatesRes);
+      console.log("Template deleted succesfully");
     } catch (error) {
       console.error("Error when deleting template:", error);
     }

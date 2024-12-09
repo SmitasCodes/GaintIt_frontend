@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import TemplateForm from "./TemplateForm/TemplateForm";
 import TemplatesList from "./TemplatesList";
-import { useTemplates } from "../../context/TemplateContext";
 
 const WorkoutTemplates = () => {
   const [showForm, setShowForm] = useState(false);
