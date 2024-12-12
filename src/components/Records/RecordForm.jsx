@@ -2,15 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useTemplates } from "../../context/TemplateContext";
 
 const RecordForm = () => {
-  const [selectTemplate, setSelectTemplate] = useState("");
+  const [selectTemplateID, setSelectTemplateID] = useState("");
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const { templates } = useTemplates();
 
-  const setsOptions = Array.from({ length: 10 }, (_, i) => i + 1);
-
   useEffect(() => {
     const searchTemplate = templates.find(
-      (template) => template._id == selectTemplate
+      (template) => template._id == selectTemplateID
     );
 
     if (searchTemplate) {
@@ -28,7 +26,9 @@ const RecordForm = () => {
 
       setSelectedTemplate(result);
     }
-  }, [selectTemplate]);
+  }, [selectTemplateID]);
+
+  const setsOptions = Array.from({ length: 10 }, (_, i) => i + 1);
 
   console.log(selectedTemplate);
 
@@ -37,8 +37,8 @@ const RecordForm = () => {
       <div>
         <label>Choose template: </label>
         <select
-          onChange={(e) => setSelectTemplate(e.target.value)}
-          value={selectTemplate}
+          onChange={(e) => setSelectTemplateID(e.target.value)}
+          value={selectTemplateID}
         >
           <option value="" disabled>
             -- Select a template --
@@ -56,13 +56,31 @@ const RecordForm = () => {
         <div>
           <h1>Your exercises:</h1>
           <ul className="px-2">
-            {selectedTemplate.exercises.map((template) => {
+            {selectedTemplate.exercises.map((exercise) => {
               return (
-                <li className="flex py-1">
-                  <h2 className="mr-4">{template.exercise_name}</h2>
+                <li className="flex py-1 flex-wrap">
+                  <h2 className="mr-4">{exercise.exercise_name}</h2>
+
+                  <label>Weight:</label>
+                  <input type="number" className="w-12" />
+
                   <label>Sets:</label>
-                  <select>
-                    <option defaultValue="" disabled selected>
+                  <select
+                    onChange={(e) => {
+                      const updatedExerciseSet = selectedTemplate.exercises.map(
+                        (ex) =>
+                          ex._id === exercise._id
+                            ? { ...ex, sets: Number(e.target.value) }
+                            : ex
+                      );
+
+                      setSelectedTemplate({
+                        ...selectedTemplate,
+                        exercises: updatedExerciseSet,
+                      });
+                    }}
+                  >
+                    <option disabled selected>
                       0
                     </option>
                     {setsOptions.map((set) => {
@@ -73,6 +91,10 @@ const RecordForm = () => {
                       );
                     })}
                   </select>
+
+                  <div>
+                    <label>Reps: </label>
+                  </div>
                 </li>
               );
             })}
