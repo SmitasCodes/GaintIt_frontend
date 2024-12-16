@@ -30,6 +30,10 @@ const RecordForm = () => {
 
   const setsOptions = Array.from({ length: 10 }, (_, i) => i + 1);
 
+  const reps = (leng) => {
+    return Array.from({ length: leng }, (_, i) => i + 1);
+  };
+
   console.log(selectedTemplate);
 
   return (
@@ -58,11 +62,28 @@ const RecordForm = () => {
           <ul className="px-2">
             {selectedTemplate.exercises.map((exercise) => {
               return (
-                <li className="flex py-1 flex-wrap">
+                <li className="flex py-1 flex-wrap bg-secondary mb-3 px-2 rounded-xl">
                   <h2 className="mr-4">{exercise.exercise_name}</h2>
 
                   <label>Weight:</label>
-                  <input type="number" className="w-12" />
+                  <input
+                    type="number"
+                    className="w-12"
+                    value={exercise.weight}
+                    onChange={(e) => {
+                      const updatedExerciseWeight =
+                        selectedTemplate.exercises.map((ex) =>
+                          ex._id === exercise._id
+                            ? { ...ex, weight: Number(e.target.value) }
+                            : ex
+                        );
+
+                      setSelectedTemplate({
+                        ...selectedTemplate,
+                        exercises: updatedExerciseWeight,
+                      });
+                    }}
+                  />
 
                   <label>Sets:</label>
                   <select
@@ -80,9 +101,7 @@ const RecordForm = () => {
                       });
                     }}
                   >
-                    <option disabled selected>
-                      0
-                    </option>
+                    <option selected>0</option>
                     {setsOptions.map((set) => {
                       return (
                         <option value={set} key={set}>
@@ -92,9 +111,20 @@ const RecordForm = () => {
                     })}
                   </select>
 
-                  <div>
-                    <label>Reps: </label>
-                  </div>
+                  {exercise.sets ? (
+                    <div className="w-full flex">
+                      <label>Reps:</label>
+                      {reps(exercise.sets).map((rep) => {
+                        return (
+                          <>
+                            <input type="number" className="w-8 mr-2" />
+                          </>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    ""
+                  )}
                 </li>
               );
             })}
