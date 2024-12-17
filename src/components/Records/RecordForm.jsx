@@ -7,34 +7,67 @@ const RecordForm = () => {
   const { templates } = useTemplates();
 
   useEffect(() => {
-    const searchTemplate = templates.find(
+    const findTemplate = templates.find(
       (template) => template._id == selectTemplateID
     );
 
-    if (searchTemplate) {
-      const transformedExercises = searchTemplate.exercises.map((exercise) => ({
+    if (findTemplate) {
+      const transformedExercises = findTemplate.exercises.map((exercise) => ({
         ...exercise,
-        weight: 0,
-        sets: 0,
-        reps: 0,
+        weight: "",
+        sets: "",
+        reps: [],
       }));
 
-      const result = {
-        template_id: searchTemplate._id,
+      const record = {
+        template_id: findTemplate._id,
         exercises: transformedExercises,
       };
 
-      setSelectedTemplate(result);
+      setSelectedTemplate(record);
     }
   }, [selectTemplateID]);
 
-  const setsOptions = Array.from({ length: 10 }, (_, i) => i + 1);
+  const exerciseUpdate = (exerciseID, key, value, repIndex) => {
+    let reps = [];
+    key == "sets" ? (reps = Array(value).fill("")) : "";
 
-  const reps = (leng) => {
-    return Array.from({ length: leng }, (_, i) => i + 1);
+    let updatedExercises;
+    if (key != "reps") {
+      updatedExercises = selectedTemplate.exercises.map((ex) =>
+        ex._id === exerciseID ? { ...ex, [key]: value, reps } : ex
+      );
+    } else {
+      updatedExercises = selectedTemplate.exercises.map((ex) =>
+        ex._id === exerciseID
+          ? {
+              ...ex,
+              [key]: ex[key].map((rep, index) =>
+                index === repIndex ? value : rep
+              ),
+            }
+          : ex
+      );
+    }
+
+    setSelectedTemplate({ ...selectedTemplate, exercises: updatedExercises });
   };
 
-  console.log(selectedTemplate);
+  // Generating array with desired length. Used for for mapping options.
+  const arrayGen = (count) => {
+    return Array.from({ length: count }, (_, i) => i + 1);
+  };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+
+    if (!selectedTemplate.template_id) {
+      console.log("template_id is missing");
+      return;
+    }
+  };
+
+  console.log(selectedTemplate)
 
   return (
     <form>
@@ -56,6 +89,7 @@ const RecordForm = () => {
           })}
         </select>
       </div>
+
       {selectedTemplate ? (
         <div>
           <h1>Your exercises:</h1>
@@ -71,38 +105,27 @@ const RecordForm = () => {
                     className="w-12"
                     value={exercise.weight}
                     onChange={(e) => {
-                      const updatedExerciseWeight =
-                        selectedTemplate.exercises.map((ex) =>
-                          ex._id === exercise._id
-                            ? { ...ex, weight: Number(e.target.value) }
-                            : ex
-                        );
-
-                      setSelectedTemplate({
-                        ...selectedTemplate,
-                        exercises: updatedExerciseWeight,
-                      });
+                      exerciseUpdate(
+                        exercise._id,
+                        "weight",
+                        Number(e.target.value)
+                      );
                     }}
                   />
 
                   <label>Sets:</label>
                   <select
                     onChange={(e) => {
-                      const updatedExerciseSet = selectedTemplate.exercises.map(
-                        (ex) =>
-                          ex._id === exercise._id
-                            ? { ...ex, sets: Number(e.target.value) }
-                            : ex
+                      exerciseUpdate(
+                        exercise._id,
+                        "sets",
+                        Number(e.target.value)
                       );
-
-                      setSelectedTemplate({
-                        ...selectedTemplate,
-                        exercises: updatedExerciseSet,
-                      });
                     }}
+                    value={exercise.sets}
                   >
                     <option selected>0</option>
-                    {setsOptions.map((set) => {
+                    {arrayGen(10).map((set) => {
                       return (
                         <option value={set} key={set}>
                           {set}
@@ -114,10 +137,22 @@ const RecordForm = () => {
                   {exercise.sets ? (
                     <div className="w-full flex">
                       <label>Reps:</label>
-                      {reps(exercise.sets).map((rep) => {
+                      {arrayGen(exercise.sets).map((rep, index) => {
                         return (
                           <>
-                            <input type="number" className="w-8 mr-2" />
+                            <input
+                              type="number"
+                              className="w-8 mr-2"
+                              value={exercise.reps[index]}
+                              onChange={(e) => {
+                                exerciseUpdate(
+                                  exercise._id,
+                                  "reps",
+                                  Number(e.target.value),
+                                  index
+                                );
+                              }}
+                            />
                           </>
                         );
                       })}
@@ -128,6 +163,7 @@ const RecordForm = () => {
                 </li>
               );
             })}
+            <button onClick={(e) => submitHandler(e)}>Submit</button>
           </ul>
         </div>
       ) : (
