@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useTemplates } from "../../context/TemplateContext";
+import Button from "../Button";
 
 const RecordForm = () => {
   const [selectTemplateID, setSelectTemplateID] = useState("");
@@ -65,9 +66,8 @@ const RecordForm = () => {
       console.log("template_id is missing");
       return;
     }
+    console.log(selectedTemplate);
   };
-
-  console.log(selectedTemplate)
 
   return (
     <form>
@@ -163,8 +163,13 @@ const RecordForm = () => {
                 </li>
               );
             })}
-            <button onClick={(e) => submitHandler(e)}>Submit</button>
+            {/* <button onClick={(e) => submitHandler(e)}>Add New Record</button> */}
           </ul>
+          <Button
+            style="bg-accent px-4 py-1 rounded-3xl block mx-auto"
+            onClick={(e) => submitHandler(e)}
+            text="Add New Record"
+          />
         </div>
       ) : (
         ""
