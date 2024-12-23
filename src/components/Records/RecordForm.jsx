@@ -5,8 +5,10 @@ import Button from "../Button";
 const RecordForm = () => {
   const [selectTemplateID, setSelectTemplateID] = useState("");
   const [selectedTemplate, setSelectedTemplate] = useState(null);
+  const [error, setError] = useState("");
   const { templates } = useTemplates();
 
+  // Useffect hook finds what template user choosen and modifies it to match records model
   useEffect(() => {
     const findTemplate = templates.find(
       (template) => template._id == selectTemplateID
@@ -15,8 +17,8 @@ const RecordForm = () => {
     if (findTemplate) {
       const transformedExercises = findTemplate.exercises.map((exercise) => ({
         ...exercise,
-        weight: "",
-        sets: "",
+        weight: 0,
+        sets: 0,
         reps: [],
       }));
 
@@ -29,16 +31,31 @@ const RecordForm = () => {
     }
   }, [selectTemplateID]);
 
+  // Updates exercises when weight/sets/reps input changes.
   const exerciseUpdate = (exerciseID, key, value, repIndex) => {
-    let reps = [];
-    key == "sets" ? (reps = Array(value).fill("")) : "";
-
     let updatedExercises;
-    if (key != "reps") {
+
+    // If sets is selected reps is extracted from selectedTemplates, then length (count of reps fields) gets adjusted to provided value
+    if (key === "sets") {
+      let exercise = selectedTemplate.exercises.find(
+        (ex) => ex._id == exerciseID
+      );
+      let reps = exercise.reps;
+
+      if (reps.length < value) {
+        reps = reps.concat(Array(value - reps.length).fill(0));
+      } else {
+        reps.length = value;
+      }
+
       updatedExercises = selectedTemplate.exercises.map((ex) =>
         ex._id === exerciseID ? { ...ex, [key]: value, reps } : ex
       );
-    } else {
+    } else if (key === "weight") {
+      updatedExercises = selectedTemplate.exercises.map((ex) =>
+        ex._id === exerciseID ? { ...ex, [key]: value } : ex
+      );
+    } else if (key === "reps") {
       updatedExercises = selectedTemplate.exercises.map((ex) =>
         ex._id === exerciseID
           ? {
@@ -54,7 +71,7 @@ const RecordForm = () => {
     setSelectedTemplate({ ...selectedTemplate, exercises: updatedExercises });
   };
 
-  // Generating array with desired length. Used for for mapping options.
+  // Generating array with desired length. Used for mapping options.
   const arrayGen = (count) => {
     return Array.from({ length: count }, (_, i) => i + 1);
   };
@@ -62,11 +79,23 @@ const RecordForm = () => {
   const submitHandler = (e) => {
     e.preventDefault();
 
-    if (!selectedTemplate.template_id) {
-      console.log("template_id is missing");
-      return;
-    }
     console.log(selectedTemplate);
+
+    // if (!selectedTemplate.template_id) {
+    //   console.log("template_id is missing");
+    //   return;
+    // }
+
+    // const weightSetsCheck = selectedTemplate.exercises
+    //   .filter((exercise) => exercise.weight <= 0 || exercise.sets <= 0)
+    //   .map((exercise) => exercise._id);
+
+    // if (!weightSetsCheck.length) {
+    //   console.log(selectedTemplate);
+    //   const repsCheck = selectedTemplate.exercises.forEach((exercise) => {
+    //     console.log(exercise.reps);
+    //   });
+    // }
   };
 
   return (
@@ -96,7 +125,11 @@ const RecordForm = () => {
           <ul className="px-2">
             {selectedTemplate.exercises.map((exercise) => {
               return (
-                <li className="flex py-1 flex-wrap bg-secondary mb-3 px-2 rounded-xl">
+                <li
+                  className={`flex py-1 flex-wrap bg-secondary mb-3 px-2 rounded-xl border-2 ${
+                    error.includes(exercise._id) ? "border-primary" : ""
+                  }`}
+                >
                   <h2 className="mr-4">{exercise.exercise_name}</h2>
 
                   <label>Weight:</label>
@@ -104,6 +137,7 @@ const RecordForm = () => {
                     type="number"
                     className="w-12"
                     value={exercise.weight}
+                    min="0"
                     onChange={(e) => {
                       exerciseUpdate(
                         exercise._id,
@@ -144,6 +178,7 @@ const RecordForm = () => {
                               type="number"
                               className="w-8 mr-2"
                               value={exercise.reps[index]}
+                              min="0"
                               onChange={(e) => {
                                 exerciseUpdate(
                                   exercise._id,
@@ -163,7 +198,6 @@ const RecordForm = () => {
                 </li>
               );
             })}
-            {/* <button onClick={(e) => submitHandler(e)}>Add New Record</button> */}
           </ul>
           <Button
             style="bg-accent px-4 py-1 rounded-3xl block mx-auto"
