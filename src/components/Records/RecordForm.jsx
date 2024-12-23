@@ -10,6 +10,7 @@ const RecordForm = () => {
 
   // Useffect hook finds what template user choosen and modifies it to match records model
   useEffect(() => {
+    setError("");
     const findTemplate = templates.find(
       (template) => template._id == selectTemplateID
     );
@@ -76,26 +77,21 @@ const RecordForm = () => {
     return Array.from({ length: count }, (_, i) => i + 1);
   };
 
+  // Handling and validating submission. First checking if weights/sets is not empty, if they are not then checking reps
   const submitHandler = (e) => {
     e.preventDefault();
 
-    console.log(selectedTemplate);
+    const weightSetsValidation = selectedTemplate.exercises
+      .filter((exercise) => exercise.weight <= 0 || exercise.sets <= 0)
+      .map((exercise) => exercise._id);
 
-    // if (!selectedTemplate.template_id) {
-    //   console.log("template_id is missing");
-    //   return;
-    // }
+    const repsValidation = selectedTemplate.exercises
+      .filter((exercise) => exercise.reps.some((rep) => rep <= 0))
+      .map((exercise) => exercise._id);
 
-    // const weightSetsCheck = selectedTemplate.exercises
-    //   .filter((exercise) => exercise.weight <= 0 || exercise.sets <= 0)
-    //   .map((exercise) => exercise._id);
+    const errors = [...new Set([...weightSetsValidation, ...repsValidation])];
 
-    // if (!weightSetsCheck.length) {
-    //   console.log(selectedTemplate);
-    //   const repsCheck = selectedTemplate.exercises.forEach((exercise) => {
-    //     console.log(exercise.reps);
-    //   });
-    // }
+    setError(errors);
   };
 
   return (
@@ -199,6 +195,11 @@ const RecordForm = () => {
               );
             })}
           </ul>
+          {error.length ? (
+            <p className="text-primary">Missing or invalid fields</p>
+          ) : (
+            ""
+          )}
           <Button
             style="bg-accent px-4 py-1 rounded-3xl block mx-auto"
             onClick={(e) => submitHandler(e)}
