@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useTemplates } from "../../context/TemplateContext";
 import Button from "../Button";
+import { postRecordService } from "../../services/recordServices";
+import { useAuth } from "../../context/AuthContext";
 
 const RecordForm = () => {
   const [selectTemplateID, setSelectTemplateID] = useState("");
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [error, setError] = useState("");
   const { templates } = useTemplates();
+  const { token } = useAuth();
 
   // Useffect hook finds what template user choosen and modifies it to match records model
   useEffect(() => {
@@ -77,10 +80,11 @@ const RecordForm = () => {
     return Array.from({ length: count }, (_, i) => i + 1);
   };
 
-  // Handling and validating submission. First checking if weights/sets is not empty, if they are not then checking reps
-  const submitHandler = (e) => {
+  // Handling and validating submission.
+  const submitHandler = async (e) => {
     e.preventDefault();
 
+    // Checking if weight/sets and reps is not empty, combining both arrays using Set and setting error if some fields are empty
     const weightSetsValidation = selectedTemplate.exercises
       .filter((exercise) => exercise.weight <= 0 || exercise.sets <= 0)
       .map((exercise) => exercise._id);
@@ -91,7 +95,22 @@ const RecordForm = () => {
 
     const errors = [...new Set([...weightSetsValidation, ...repsValidation])];
 
-    setError(errors);
+    if (errors.length) {
+      setError(errors);
+      return;
+    }
+
+    try {
+      const response = await postRecordService(
+        selectedTemplate,
+        `Bearer ${token}`
+      );
+      if (response == 201) {
+        console.log("Record added succesfully");
+      }
+    } catch (error) {
+      console.error("Error when trying to post a record", error);
+    }
   };
 
   return (
