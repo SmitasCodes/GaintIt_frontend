@@ -107,6 +107,9 @@ const RecordForm = () => {
       );
       if (response == 201) {
         console.log("Record added succesfully");
+        setError("");
+        setSelectedTemplate(null);
+        setSelectTemplateID("");
       }
     } catch (error) {
       console.error("Error when trying to post a record", error);
