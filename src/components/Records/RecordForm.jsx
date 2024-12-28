@@ -147,6 +147,7 @@ const RecordForm = () => {
                   className={`flex py-1 flex-wrap bg-secondary mb-3 px-2 rounded-xl border-2 ${
                     error.includes(exercise._id) ? "border-primary" : ""
                   }`}
+                  key={exercise._id}
                 >
                   <h2 className="mr-4">{exercise.exercise_name}</h2>
 
@@ -176,7 +177,7 @@ const RecordForm = () => {
                     }}
                     value={exercise.sets}
                   >
-                    <option selected>0</option>
+                    <option valeu="0" disabled>0</option>
                     {arrayGen(10).map((set) => {
                       return (
                         <option value={set} key={set}>
