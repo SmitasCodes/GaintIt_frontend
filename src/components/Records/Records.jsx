@@ -6,13 +6,12 @@ import { useTemplates } from "../../context/TemplateContext";
 
 const Records = () => {
   const [showForm, setShowForm] = useState(false);
-  const record = [];
 
   return (
     <div className="flex-grow flex flex-col w-[calc(50%-8px)] rounded-xl border-2 border-accent bg-secondary">
       <h2 className="py-1.5 text-center text-xl text-neutral">Records</h2>
       <div className="flex-grow bg-neutral rounded-xl">
-        {!showForm ? <RecordsList records={record} /> : <RecordForm />}
+        {!showForm ? <RecordsList/> : <RecordForm />}
       </div>
       <div className="h-14 flex items-center justify-end">
         <IoIosAddCircleOutline

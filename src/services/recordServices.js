@@ -20,4 +20,22 @@ const postRecordService = async (record, token) => {
   }
 };
 
-export { postRecordService };
+// Get all user workout records
+const getRecordsService = async (token) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:8787/api/workout-record/`,
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+
+    return response.data.records;
+  } catch (error) {
+    console.error("Error when trying to get all the user records:", error);
+  }
+};
+
+export { postRecordService, getRecordsService };
