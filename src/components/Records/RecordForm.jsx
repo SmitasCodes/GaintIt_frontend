@@ -177,7 +177,7 @@ const RecordForm = () => {
                     }}
                     value={exercise.sets}
                   >
-                    <option valeu="0" disabled>0</option>
+                    <option value="0" disabled>0</option>
                     {arrayGen(10).map((set) => {
                       return (
                         <option value={set} key={set}>

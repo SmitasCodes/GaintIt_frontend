@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import RecordsList from "./RecordsList";
 import RecordForm from "./RecordForm";
-import { useTemplates } from "../../context/TemplateContext";
+import RecordsFilter from "./RecordsFilter";
 
 const Records = () => {
   const [showForm, setShowForm] = useState(false);
@@ -11,7 +11,14 @@ const Records = () => {
     <div className="flex-grow flex flex-col w-[calc(50%-8px)] rounded-xl border-2 border-accent bg-secondary">
       <h2 className="py-1.5 text-center text-xl text-neutral">Records</h2>
       <div className="flex-grow bg-neutral rounded-xl">
-        {!showForm ? <RecordsList/> : <RecordForm />}
+        {!showForm ? (
+          <>
+            <RecordsFilter />
+            <RecordsList />
+          </>
+        ) : (
+          <RecordForm />
+        )}
       </div>
       <div className="h-14 flex items-center justify-end">
         <IoIosAddCircleOutline

@@ -12,24 +12,14 @@ const RecordsList = () => {
       if (!response) {
         setRecords([]);
       } else {
-        // Displaying time in user time zone, also changing format to YYYY-MM-DD HH:MM 
+        // Converting time to the user's time zone and formatting it as YYYY-MM-DD HH:MM
         const dateFormation = (workoutDate) => {
-          const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-          const date = new Date(workoutDate).toLocaleString("en-GB", {
-            timeZone: timeZone,
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-          });
-
-          const year = date.slice(6, 10);
-          const month = date.slice(0, 2);
-          const day = date.slice(3, 5);
-          const hour = date.slice(12, 14);
-          const minute = date.slice(15, 17);
+          const dateObj = new Date(workoutDate);
+          const year = dateObj.getFullYear();
+          const month = String(dateObj.getMonth() + 1).padStart(2, "0");
+          const day = String(dateObj.getDate()).padStart(2, "0");
+          const hour = String(dateObj.getHours()).padStart(2, "0");
+          const minute = String(dateObj.getMinutes()).padStart(2, "0");
 
           const dateFormatted = `${year}-${month}-${day} ${hour}:${minute}`;
           return dateFormatted;
@@ -59,9 +49,17 @@ const RecordsList = () => {
         <ul className="p-2">
           {records.map((record) => {
             return (
-              <li key={record._id} className="bg-secondary mb-2">
+              <li
+                key={record._id}
+                className="bg-secondary mb-2 py-1 px-2 rounded-lg flex justify-between items-center"
+              >
                 <span>{record.template_name}</span>
-                <span className="float-right">{record.workout_date}</span>
+                <time
+                  className="text-sm"
+                  dateTime={record.workout_date.replace(" ", "T")}
+                >
+                  {record.workout_date}
+                </time>
               </li>
             );
           })}
