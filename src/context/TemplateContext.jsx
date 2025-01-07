@@ -26,10 +26,6 @@ const TemplateProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    fetchTemplates();
-  }, []);
-
-  useEffect(() => {
     if (token) {
       fetchTemplates();
     }

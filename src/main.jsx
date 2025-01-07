@@ -4,12 +4,15 @@ import "./index.css";
 import App from "./App.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import { TemplateProvider } from "./context/TemplateContext.jsx";
+import { RecordsProvider } from "./context/RecordsContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <AuthProvider>
       <TemplateProvider>
-        <App />
+        <RecordsProvider>
+          <App />
+        </RecordsProvider>
       </TemplateProvider>
     </AuthProvider>
   </StrictMode>

@@ -3,7 +3,7 @@ import { useTemplates } from "../../context/TemplateContext";
 
 const RecordsFilter = () => {
   const { templates } = useTemplates();
-  console.log(templates);
+  
   return (
     <div className="p-2">
       <select name="">
