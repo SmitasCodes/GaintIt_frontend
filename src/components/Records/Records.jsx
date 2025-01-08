@@ -6,6 +6,7 @@ import RecordsFilter from "./RecordsFilter";
 
 const Records = () => {
   const [showForm, setShowForm] = useState(false);
+  const [selectedTemplate, setSelectedTemplate] = useState("all");
 
   return (
     <div className="flex-grow flex flex-col w-[calc(50%-8px)] rounded-xl border-2 border-accent bg-secondary">
@@ -13,8 +14,11 @@ const Records = () => {
       <div className="flex-grow bg-neutral rounded-xl">
         {!showForm ? (
           <>
-            <RecordsFilter />
-            <RecordsList />
+            <RecordsFilter
+              selectedTemplate={selectedTemplate}
+              setSelectedTemplate={setSelectedTemplate}
+            />
+            <RecordsList selectedTemplate={selectedTemplate} />
           </>
         ) : (
           <RecordForm />

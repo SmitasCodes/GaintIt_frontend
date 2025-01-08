@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { useAuth } from "../../context/AuthContext";
+import React, { useMemo } from "react";
 import { useRecords } from "../../context/RecordsContext";
 
-const RecordsList = () => {
+const RecordsList = ({ selectedTemplate }) => {
   const { records } = useRecords();
 
   const formatDate = (date) => {
@@ -16,13 +15,18 @@ const RecordsList = () => {
     return dateFormatted;
   };
 
+  const filteredRecords = useMemo(() => {
+    if (selectedTemplate === "all") return records;
+    return records.filter((record) => selectedTemplate === record.template_id);
+  }, [selectedTemplate, records]);
+
   return (
     <>
-      {!records.length ? (
+      {!filteredRecords.length ? (
         <p className="text-center">No records found</p>
       ) : (
         <ul className="p-2">
-          {records.map((record) => {
+          {filteredRecords.map((record) => {
             return (
               <li
                 key={record._id}
