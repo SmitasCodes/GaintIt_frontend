@@ -1,19 +1,9 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { useRecords } from "../../context/RecordsContext";
+import { formatDate } from "../../utils/formatDate";
 
 const RecordsList = ({ selectedTemplate }) => {
   const { records } = useRecords();
-
-  const formatDate = (date) => {
-    const dateObj = new Date(date);
-    const year = dateObj.getFullYear();
-    const month = String(dateObj.getMonth() + 1).padStart(2, "0");
-    const day = String(dateObj.getDate()).padStart(2, "0");
-    const hour = String(dateObj.getHours()).padStart(2, "0");
-    const minute = String(dateObj.getMinutes()).padStart(2, "0");
-    const dateFormatted = `${year}-${month}-${day} ${hour}:${minute}`;
-    return dateFormatted;
-  };
 
   const filteredRecords = useMemo(() => {
     if (selectedTemplate === "all") return records;
