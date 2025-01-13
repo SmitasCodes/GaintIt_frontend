@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useTemplates } from "../../context/TemplateContext";
-import Button from "../Button";
 import { postRecordService } from "../../services/recordServices";
 import { useAuth } from "../../context/AuthContext";
+import { arrayGen } from "../../utils/arrayGen";
 
 const RecordForm = () => {
   const [selectTemplateID, setSelectTemplateID] = useState("");
@@ -75,11 +75,6 @@ const RecordForm = () => {
     setSelectedTemplate({ ...selectedTemplate, exercises: updatedExercises });
   };
 
-  // Generating array with desired length. Used for mapping options.
-  const arrayGen = (count) => {
-    return Array.from({ length: count }, (_, i) => i + 1);
-  };
-
   // Handling and validating submission.
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -116,12 +111,14 @@ const RecordForm = () => {
     }
   };
 
+  console.log(selectedTemplate);
+
   return (
     <form className="p-2">
       <div className="mb-4">
         <label>Choose a template: </label>
         <select
-        className="py-0.5 px-2 rounded-lg"
+          className="py-0.5 px-2 rounded-lg"
           onChange={(e) => setSelectTemplateID(e.target.value)}
           value={selectTemplateID}
         >
@@ -138,69 +135,62 @@ const RecordForm = () => {
         </select>
       </div>
 
-      {selectedTemplate ? (
-        <div>
-          <ul>
-            {selectedTemplate.exercises.map((exercise) => {
-              return (
-                <li
-                  className={`flex py-1 flex-wrap bg-secondary mb-3 px-2 rounded-xl border-2 ${
-                    error.includes(exercise._id) ? "border-primary" : ""
-                  }`}
-                  key={exercise._id}
-                >
-                  <h2 className="mr-4">{exercise.exercise_name}</h2>
-
-                  <label>Weight:</label>
-                  <input
-                    type="number"
-                    className="w-12"
-                    value={exercise.weight}
-                    min="0"
-                    onChange={(e) => {
-                      exerciseUpdate(
-                        exercise._id,
-                        "weight",
-                        Number(e.target.value)
-                      );
-                    }}
-                  />
-
-                  <label>Sets:</label>
-                  <select
-                    onChange={(e) => {
-                      exerciseUpdate(
-                        exercise._id,
-                        "sets",
-                        Number(e.target.value)
-                      );
-                    }}
-                    value={exercise.sets}
-                  >
-                    <option value="0" disabled>0</option>
-                    {arrayGen(10).map((set) => {
-                      return (
-                        <option value={set} key={set}>
-                          {set}
-                        </option>
-                      );
-                    })}
-                  </select>
-
-                  {exercise.sets ? (
-                    <div className="w-full flex">
-                      <label>Reps:</label>
-                      {arrayGen(exercise.sets).map((rep, index) => {
+      {selectedTemplate && (
+        <table className="w-full border-black border">
+          <thead>
+            <tr>
+              <th className=" border-black border pl-1 py-1">Name</th>
+              <th className=" border-black border pl-1">Weight</th>
+              <th className=" border-black border pl-1">Sets</th>
+              <th className=" border-black border pl-1">Reps</th>
+            </tr>
+          </thead>
+          <tbody>
+            {selectedTemplate.exercises.map(
+              ({ _id, exercise_name, weight, sets, reps }) => {
+                return (
+                  <tr key={_id}>
+                    <td className=" border-black border pl-1">
+                      {exercise_name}
+                    </td>
+                    <td className=" border-black border pl-1">
+                      <input
+                        type="number"
+                        value={weight}
+                        min="0"
+                        onChange={(e) => {
+                          exerciseUpdate(_id, "weight", Number(e.target.value));
+                        }}
+                      />
+                    </td>
+                    <td className=" border-black border pl-1">
+                      <select
+                        onChange={(e) => {
+                          exerciseUpdate(_id, "sets", Number(e.target.value));
+                        }}
+                        value={sets}
+                      >
+                        {arrayGen(10).map((set) => {
+                          return (
+                            <option value={set} key={set} disabled={set == 0}>
+                              {set}
+                            </option>
+                          );
+                        })}
+                      </select>
+                    </td>
+                    <td className=" border-black border pl-1">
+                      {arrayGen(sets).map((index) => {
                         return (
                           <>
                             <input
                               type="number"
                               className="w-8 mr-2"
-                              value={exercise.reps[index]}
+                              value={reps[index]}
                               min="0"
                               onChange={(e) => {
                                 exerciseUpdate(
-                                  exercise._id,
+                                  _id,
                                   "reps",
                                   Number(e.target.value),
                                   index
@@ -210,27 +200,13 @@ const RecordForm = () => {
                           </>
                         );
                       })}
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                </li>
-              );
-            })}
-          </ul>
-          {error.length ? (
-            <p className="text-primary">Missing or invalid fields</p>
-          ) : (
-            ""
-          )}
-          <Button
-            style="bg-accent px-4 py-1 rounded-3xl block mx-auto"
-            onClick={(e) => submitHandler(e)}
-            text="Add New Record"
-          />
-        </div>
-      ) : (
-        ""
+                    </td>
+                  </tr>
+                );
+              }
+            )}
+          </tbody>
+        </table>
       )}
     </form>
   );
