@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useTemplates } from "../../context/TemplateContext";
 import { postRecordService } from "../../services/recordServices";
+import Button from "../Button";
 import { useAuth } from "../../context/AuthContext";
 import { arrayGen } from "../../utils/arrayGen";
 
 const RecordForm = () => {
   const [selectTemplateID, setSelectTemplateID] = useState("");
   const [selectedTemplate, setSelectedTemplate] = useState(null);
-  const [error, setError] = useState("");
+  const [error, setError] = useState([]);
   const { templates } = useTemplates();
   const { token } = useAuth();
 
@@ -136,77 +137,95 @@ const RecordForm = () => {
       </div>
 
       {selectedTemplate && (
-        <table className="w-full border-black border">
-          <thead>
-            <tr>
-              <th className=" border-black border pl-1 py-1">Name</th>
-              <th className=" border-black border pl-1">Weight</th>
-              <th className=" border-black border pl-1">Sets</th>
-              <th className=" border-black border pl-1">Reps</th>
-            </tr>
-          </thead>
-          <tbody>
-            {selectedTemplate.exercises.map(
-              ({ _id, exercise_name, weight, sets, reps }) => {
-                return (
-                  <tr key={_id}>
-                    <td className=" border-black border pl-1">
-                      {exercise_name}
-                    </td>
-                    <td className=" border-black border pl-1">
-                      <input
-                        type="number"
-                        value={weight}
-                        min="0"
-                        onChange={(e) => {
-                          exerciseUpdate(_id, "weight", Number(e.target.value));
-                        }}
-                      />
-                    </td>
-                    <td className=" border-black border pl-1">
-                      <select
-                        onChange={(e) => {
-                          exerciseUpdate(_id, "sets", Number(e.target.value));
-                        }}
-                        value={sets}
-                      >
-                        {arrayGen(10).map((set) => {
+        <>
+          <table className="w-full border-black border">
+            <thead>
+              <tr>
+                <th className=" border-black border pl-1 py-1">Name</th>
+                <th className=" border-black border pl-1">Weight</th>
+                <th className=" border-black border pl-1">Sets</th>
+                <th className=" border-black border pl-1">Reps</th>
+              </tr>
+            </thead>
+            <tbody>
+              {selectedTemplate.exercises.map(
+                ({ _id, exercise_name, weight, sets, reps }) => {
+                  return (
+                    <tr
+                      key={_id}
+                      className={`${error.includes(_id) ? "bg-red-400" : ""}`}
+                    >
+                      <td className=" border-black border pl-1">
+                        {exercise_name}
+                      </td>
+                      <td className=" border-black border pl-1">
+                        <input
+                          type="number"
+                          className="w-8"
+                          value={weight}
+                          min="0"
+                          onChange={(e) => {
+                            exerciseUpdate(
+                              _id,
+                              "weight",
+                              Number(e.target.value)
+                            );
+                          }}
+                        />
+                      </td>
+                      <td className=" border-black border pl-1">
+                        <select
+                          onChange={(e) => {
+                            exerciseUpdate(_id, "sets", Number(e.target.value));
+                          }}
+                          value={sets}
+                        >
+                          {arrayGen(10).map((set) => {
+                            return (
+                              <option value={set} key={set} disabled={set == 0}>
+                                {set}
+                              </option>
+                            );
+                          })}
+                        </select>
+                      </td>
+                      <td className=" border-black border pl-1">
+                        {arrayGen(sets).map((index) => {
                           return (
-                            <option value={set} key={set} disabled={set == 0}>
-                              {set}
-                            </option>
+                            <>
+                              <input
+                                type="number"
+                                className="w-8 mr-2"
+                                value={reps[index]}
+                                min="0"
+                                onChange={(e) => {
+                                  exerciseUpdate(
+                                    _id,
+                                    "reps",
+                                    Number(e.target.value),
+                                    index
+                                  );
+                                }}
+                              />
+                            </>
                           );
                         })}
-                      </select>
-                    </td>
-                    <td className=" border-black border pl-1">
-                      {arrayGen(sets).map((index) => {
-                        return (
-                          <>
-                            <input
-                              type="number"
-                              className="w-8 mr-2"
-                              value={reps[index]}
-                              min="0"
-                              onChange={(e) => {
-                                exerciseUpdate(
-                                  _id,
-                                  "reps",
-                                  Number(e.target.value),
-                                  index
-                                );
-                              }}
-                            />
-                          </>
-                        );
-                      })}
-                    </td>
-                  </tr>
-                );
-              }
-            )}
-          </tbody>
-        </table>
+                      </td>
+                    </tr>
+                  );
+                }
+              )}
+            </tbody>
+          </table>
+          {error.length > 0 && (
+            <p className="text-primary mt-1">Missing or invalid fields</p>
+          )}
+          <Button
+            style="bg-accent px-4 py-1 text-sm rounded-3xl block mx-auto my-2"
+            onClick={(e) => submitHandler(e)}
+            text="Add New Record"
+          />
+        </>
       )}
     </form>
   );
