@@ -8,7 +8,7 @@ const RecordsFilter = ({ selectedTemplate, setSelectedTemplate }) => {
     <select
       value={selectedTemplate}
       onChange={(e) => setSelectedTemplate(e.target.value)}
-      className="mt-2 ml-2"
+      className="mt-2 ml-2 py-1 px-2 rounded-lg text-md"
     >
       <option value="all">All templates</option>
       {templates.map((template) => {

@@ -117,10 +117,11 @@ const RecordForm = () => {
   };
 
   return (
-    <form>
-      <div>
-        <label>Choose template: </label>
+    <form className="p-2">
+      <div className="mb-4">
+        <label>Choose a template: </label>
         <select
+        className="py-0.5 px-2 rounded-lg"
           onChange={(e) => setSelectTemplateID(e.target.value)}
           value={selectTemplateID}
         >
@@ -139,8 +140,7 @@ const RecordForm = () => {
 
       {selectedTemplate ? (
         <div>
-          <h1>Your exercises:</h1>
-          <ul className="px-2">
+          <ul>
             {selectedTemplate.exercises.map((exercise) => {
               return (
                 <li

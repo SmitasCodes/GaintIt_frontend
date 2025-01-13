@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { IoIosAddCircleOutline } from "react-icons/io";
 import RecordsList from "./RecordsList";
 import RecordForm from "./RecordForm";
 import RecordsFilter from "./RecordsFilter";
@@ -9,9 +8,9 @@ const Records = () => {
   const [selectedTemplate, setSelectedTemplate] = useState("all");
 
   return (
-    <div className="flex-grow flex flex-col w-[calc(50%-8px)] rounded-xl border-2 border-accent bg-secondary">
+    <div className="flex-grow flex flex-col w-[calc(50%-8px)] rounded-md border-2 bg-secondary">
       <h2 className="py-1.5 text-center text-xl text-neutral">Records</h2>
-      <div className="flex-grow bg-neutral rounded-xl">
+      <div className="flex-grow bg-neutral  rounded-lg mx-1">
         {!showForm ? (
           <>
             <RecordsFilter
@@ -24,11 +23,13 @@ const Records = () => {
           <RecordForm />
         )}
       </div>
-      <div className="h-14 flex items-center justify-end">
-        <IoIosAddCircleOutline
-          className="w-12 h-auto mr-2 text-accent"
+      <div className="h-10 flex items-center justify-end">
+        <button
+          className="text-md py-0.5 px-2 bg-accent rounded-md mr-1"
           onClick={() => setShowForm(!showForm)}
-        />
+        >
+          {!showForm ? "Add Record" : "Records"}
+        </button>
       </div>
     </div>
   );

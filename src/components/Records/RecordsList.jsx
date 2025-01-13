@@ -64,9 +64,9 @@ const RecordsList = ({ selectedTemplate }) => {
                     </thead>
                     <tbody>
                       {record.exercises.map(
-                        ({ exercise_name, weight, sets, reps }) => {
+                        ({_id, exercise_name, weight, sets, reps }) => {
                           return (
-                            <tr>
+                            <tr key={_id}>
                               <td className="border-collapse border-black border  pl-1">
                                 {exercise_name}
                               </td>
