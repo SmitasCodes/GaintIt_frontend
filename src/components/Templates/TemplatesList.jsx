@@ -42,7 +42,7 @@ const TemplatesList = ({ setShowForm, setEditTemplate }) => {
           templates.map((template) => {
             return (
               <li
-                className="bg-red-400 my-2 px-3 flex justify-between rounded-md"
+                className="bg-secondary my-2 px-3 flex justify-between rounded-md"
                 key={template._id}
               >
                 {template.name}

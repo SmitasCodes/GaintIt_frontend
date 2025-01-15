@@ -83,7 +83,7 @@ const TemplateForm = ({ editTemplate }) => {
 
   return (
     <TemplatesSectionWrapper>
-      <form className="bg-red-900 px-2 relative ">
+      <form className=" px-2 relative ">
         <div className="flex justify-between py-3">
           <label className="pr-3">Template name:</label>
           <input

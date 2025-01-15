@@ -180,7 +180,7 @@ const RecordForm = () => {
                           }}
                           value={sets}
                         >
-                          {arrayGen(10).map((set) => {
+                          {arrayGen(11).map((set) => {
                             return (
                               <option value={set} key={set} disabled={set == 0}>
                                 {set}
@@ -203,7 +203,7 @@ const RecordForm = () => {
                                     _id,
                                     "reps",
                                     Number(e.target.value),
-                                    index
+                                    index 
                                   );
                                 }}
                               />
