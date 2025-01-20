@@ -7,19 +7,22 @@ const WorkoutTemplates = () => {
   const [editTemplate, setEditTemplate] = useState("");
 
   return (
-    <div className="h-[calc(50%-8px)] w-[50%] rounded-xl relative flex flex-col bg-secondary px-1 pb-1">
+    <div className="h-[calc(50%-8px)] w-[50%] rounded-xl relative flex flex-col bg-secondary px-1 pb-1 ">
       <h2 className="mx-auto text-xl my-1">Templates</h2>
-      <div className="flex h-8  items-center bg-secondary rounded-xl">
+
+      <div className="flex h-8 items-center bg-secondary rounded-xl pb-1">
         <a
-          className={`border-red-900 px-2 rounded-lg cursor-pointer ${
-            !showForm ? "bg-accent" : ""
+          className={`px-2 rounded-lg cursor-pointer ${
+            !showForm && "bg-accent"
           }`}
           onClick={() => setShowForm(false)}
         >
           All templates
         </a>
         <a
-          className={`px-2 rounded-lg cursor-pointer ${showForm ? "bg-accent" : ""}`}
+          className={`ml-1 px-2 rounded-lg cursor-pointer ${
+            showForm && "bg-accent"
+          }`}
           onClick={() => setShowForm(true)}
         >
           Add / Edit

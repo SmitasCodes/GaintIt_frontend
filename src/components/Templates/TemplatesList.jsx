@@ -1,13 +1,12 @@
 import React, { useEffect } from "react";
 import TemplatesSectionWrapper from "./TemplatesSectionWrapper";
-import { CiEdit } from "react-icons/ci";
-import { MdDelete } from "react-icons/md";
 import {
   deleteTemplateService,
   getAllTemplatesService,
 } from "../../services/templateServices";
 import { useAuth } from "../../context/AuthContext";
 import { useTemplates } from "../../context/TemplateContext";
+import Button from "../Button";
 
 const TemplatesList = ({ setShowForm, setEditTemplate }) => {
   const { token } = useAuth();
@@ -42,21 +41,25 @@ const TemplatesList = ({ setShowForm, setEditTemplate }) => {
           templates.map((template) => {
             return (
               <li
-                className="bg-secondary my-2 px-3 flex justify-between rounded-md"
+                className="bg-secondary my-2 py-0.5 px-3 flex justify-between rounded-md"
                 key={template._id}
               >
                 {template.name}
                 <div className="flex items-center">
-                  <CiEdit
-                    className="mr-2 cursor-pointer"
-                    title="edit"
+                  <Button
+                    style="bg-emerald-400 px-2 rounded-md mr-2"
+                    type="button"
+                    text="Edit"
                     onClick={() => handleEdit(template)}
-                  />
-                  <MdDelete
-                    className="cursor-pointer"
-                    title="delete"
-                    onClick={() => handleDelete(template._id)}
-                  />
+                  ></Button>
+                  <Button
+                    style="bg-primary px-2 rounded-md"
+                    type="button"
+                    text="Delete"
+                    onClick={() => handleDelete(template)}
+                  >
+                    Delete
+                  </Button>
                 </div>
               </li>
             );

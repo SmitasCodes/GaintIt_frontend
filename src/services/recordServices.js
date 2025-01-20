@@ -32,10 +32,12 @@ const getRecordsService = async (token) => {
       }
     );
 
+
     return response.data.records;
   } catch (error) {
     console.error("Error when trying to get all the user records:", error);
   }
 };
+
 
 export { postRecordService, getRecordsService };

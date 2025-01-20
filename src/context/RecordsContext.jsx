@@ -15,20 +15,17 @@ const RecordsProvider = ({ children }) => {
   const fetchRecords = async () => {
     try {
       const response = await getRecordsService(`Bearer ${token}`);
-
-      if (!response) {
-        setRecords([]);
-      } else {
-        setRecords(response);
-      }
+      setRecords(response || []);
     } catch (error) {
-      console.error("Error when posting workout record:", error);
+      console.error("Error when fetching workout records:", error);
     }
   };
 
   useEffect(() => {
     if (token) {
       fetchRecords();
+    } else {
+      setRecords([]);
     }
   }, [token]);
 

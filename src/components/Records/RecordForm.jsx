@@ -112,8 +112,6 @@ const RecordForm = () => {
     }
   };
 
-  console.log(selectedTemplate);
-
   return (
     <form className="p-2">
       <div className="mb-4">
@@ -203,7 +201,7 @@ const RecordForm = () => {
                                     _id,
                                     "reps",
                                     Number(e.target.value),
-                                    index 
+                                    index
                                   );
                                 }}
                               />
