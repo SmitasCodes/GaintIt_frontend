@@ -23,6 +23,8 @@ const TemplateExercises = ({ exercises, setExercises }) => {
               >
                 {exercise["exercise_name"]}
                 <span className="w-1.5 h-1.5 mx-2 bg-current rounded-full"></span>
+                {exercise.sets}
+                {exercise.sets > 1 ? " sets" : " set"}
                 <Button
                   style="cursor-pointer bg-primary px-2 rounded-lg ml-auto text-md"
                   text="Delete"

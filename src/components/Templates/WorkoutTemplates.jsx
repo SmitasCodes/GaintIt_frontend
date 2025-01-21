@@ -8,7 +8,7 @@ const WorkoutTemplates = () => {
   const [editTemplate, setEditTemplate] = useState("");
 
   return (
-    <div className="h-[calc(50%-8px)] w-[50%] rounded-xl relative flex flex-col bg-secondary px-1 pb-1">
+    <div className="h-[calc(60%-8px)] w-[50%] rounded-xl relative flex flex-col bg-secondary px-1 pb-1">
       <h2 className="mx-auto text-xl my-1">Templates</h2>
 
       {/* Handles navigation in templates component between templates list and templates 'Add / Edit' form */}

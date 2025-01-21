@@ -47,6 +47,7 @@ const TemplateForm = ({ editTemplate }) => {
     // Cleans exercises from unnecessary data before posting to db
     const transformedExercises = exercises.map((exercise) => ({
       exercise_name: exercise["exercise_name"],
+      sets: exercise.sets,
       _id: exercise._id,
     }));
 
