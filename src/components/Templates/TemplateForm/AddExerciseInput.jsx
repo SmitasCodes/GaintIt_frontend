@@ -1,43 +1,45 @@
 import React, { useState } from "react";
 
 const AddExerciseInput = ({ getInput }) => {
-  const [showExerciseAddBtn, setShowExerciseAddBtn] = useState(false);
-  const [inputValue, setInputValue] = useState("");
-
-  const addExerciceButton = (e) => {
-    if (e.target.value) {
-      setShowExerciseAddBtn(true);
-    } else {
-      setShowExerciseAddBtn(false);
-    }
-  };
+  const [exerciseName, setExerciseName] = useState("");
+  const [exerciseSets, setExerciseSets] = useState("");
 
   const addExerciseButtonHandler = (e) => {
     e.preventDefault();
-    if (!inputValue) {
+    if (!exerciseName) {
       console.log("Please enter exercise name");
       return;
     }
-    getInput(inputValue);
-    setInputValue("");
+
+    getInput(exerciseName, exerciseSets);
+    setExerciseName("");
   };
 
   return (
-    <div className="flex justify-between pb-2">
+    <div className="flex">
       <label>Exercise name:</label>
       <input
         type="text"
-        onChange={addExerciceButton}
-        value={inputValue}
-        onChangeCapture={(e) => setInputValue(e.target.value)}
+        onChange={(e) => setExerciseName(e.target.value)}
+        value={exerciseName}
+        className="outline-none ml-1 w-24 mr-2"
       />
+
+      <label>Sets:</label>
+      <input
+        type="number"
+        onChange={(e) => setExerciseSets(e.target.value)}
+        value={exerciseSets}
+        min="0"
+        max="10"
+        className="outline-none ml-2 w-10"
+      />
+
       <button
-        className={`bg-red-500 px-1 inline ${
-          showExerciseAddBtn ? "opacity-1" : "opacity-0"
-        }`}
+        className={`bg-accent px-1 inline ml-2`}
         onClick={addExerciseButtonHandler}
       >
-        Add
+        Add exercise
       </button>
     </div>
   );

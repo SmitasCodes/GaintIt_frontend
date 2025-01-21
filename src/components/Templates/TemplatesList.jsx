@@ -16,9 +16,10 @@ const TemplatesList = ({ setShowForm, setEditTemplate }) => {
     setEditTemplate("");
   }, []);
 
-  const handleDelete = async (templateId) => {
+  // Calls delete template service and refetches all the templates, once delete button is pressed
+  const handleDelete = async (templateID) => {
     try {
-      await deleteTemplateService(templateId, `Bearer ${token}`);
+      await deleteTemplateService(templateID, `Bearer ${token}`);
       const templatesRes = await getAllTemplatesService(`Bearer ${token}`);
       setTemplates(templatesRes);
       console.log("Template deleted succesfully");
@@ -27,6 +28,7 @@ const TemplatesList = ({ setShowForm, setEditTemplate }) => {
     }
   };
 
+  // Updates showForm and editTemplate states when edit button is pressed, passing them back to WorkoutTemplates
   const handleEdit = (template) => {
     setEditTemplate(template);
     setShowForm(true);
@@ -45,21 +47,20 @@ const TemplatesList = ({ setShowForm, setEditTemplate }) => {
                 key={template._id}
               >
                 {template.name}
+
                 <div className="flex items-center">
                   <Button
                     style="bg-emerald-400 px-2 rounded-md mr-2"
                     type="button"
                     text="Edit"
                     onClick={() => handleEdit(template)}
-                  ></Button>
+                  />
                   <Button
                     style="bg-primary px-2 rounded-md"
                     type="button"
                     text="Delete"
-                    onClick={() => handleDelete(template)}
-                  >
-                    Delete
-                  </Button>
+                    onClick={() => handleDelete(template._id)}
+                  />
                 </div>
               </li>
             );

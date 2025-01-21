@@ -18,6 +18,7 @@ const TemplateForm = ({ editTemplate }) => {
   const { token } = useAuth();
   const { fetchTemplates } = useTemplates();
 
+  // If editTemplate is true, states are updated in order to update template later in a process
   useEffect(() => {
     if (editTemplate) {
       setTemplateName(editTemplate.name);
@@ -26,10 +27,11 @@ const TemplateForm = ({ editTemplate }) => {
     }
   }, [editTemplate]);
 
-  const getExerciseInput = (exerciseInput) => {
+  // Callback function, updates exercises state, getting values from AddExerciseInput.jsx
+  const getExerciseInput = (exerciseName, exerciseSets) => {
     setExercises((prevExercises) => [
       ...prevExercises,
-      { exercise_name: exerciseInput, _id: uuidv4() },
+      { exercise_name: exerciseName, sets: exerciseSets, temp_id: uuidv4() },
     ]);
   };
 
@@ -42,9 +44,10 @@ const TemplateForm = ({ editTemplate }) => {
       return;
     }
 
-    // Removing _id from exercises, before posting
+    // Cleans exercises from unnecessary data before posting to db
     const transformedExercises = exercises.map((exercise) => ({
       exercise_name: exercise["exercise_name"],
+      _id: exercise._id,
     }));
 
     const templateData = {
@@ -52,6 +55,7 @@ const TemplateForm = ({ editTemplate }) => {
       exercises: transformedExercises,
     };
 
+    // Posts or updates Template, depending if editTemplate is true or false
     try {
       const response = !editTemplate
         ? await postTemplateService(templateData, `Bearer ${token}`)
@@ -83,23 +87,24 @@ const TemplateForm = ({ editTemplate }) => {
 
   return (
     <TemplatesSectionWrapper>
-      <form className="px-2 relative">
-        <div className="flex justify-between py-3">
-          <label className="pr-3">Template name:</label>
+      <form className="px-1 py-1.5">
+        <div className="pb-2">
+          <label>Template name:</label>
           <input
             type="text"
-            className="flex-grow"
+            className="ml-2 text-md outline-none"
             onChange={(e) => setTemplateName(e.target.value)}
             value={templateName}
           />
         </div>
-        <TemplateExercises exercises={exercises} setExercises={setExercises} />
+
         <AddExerciseInput getInput={getExerciseInput} />
+        <TemplateExercises exercises={exercises} setExercises={setExercises} />
+        <TemplateSubmitWrapper
+          buttonText={editTemplate ? "Update Template" : "Add Template"}
+          clickFunction={submitTemplateHandler}
+        />
       </form>
-      <TemplateSubmitWrapper
-        buttonText={editTemplate ? "Update Template" : "Add Template"}
-        clickFunction={submitTemplateHandler}
-      />
     </TemplatesSectionWrapper>
   );
 };
