@@ -8,9 +8,10 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "concurrently \"npm run dev\" \"npm run backend\" \"npm run open-backend\"",
+    "start": "concurrently \"npm run dev\" \"npm run backend\" \"npm run open-frontend\" \"npm run open-backend\"",
     "backend": "cd ../GaintIt_back && npm start ",
-    "open-backend": "code ../GaintIt_back"
+    "open-backend": "code ../GaintIt_back",
+    "open-frontend": "code ."
   },
   "dependencies": {
     "axios": "^1.7.7",

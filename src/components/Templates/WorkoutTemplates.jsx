@@ -1,32 +1,32 @@
 import React, { useState } from "react";
 import TemplateForm from "./TemplateForm/TemplateForm";
 import TemplatesList from "./TemplatesList";
+import Button from "../Button";
 
 const WorkoutTemplates = () => {
   const [showForm, setShowForm] = useState(false);
   const [editTemplate, setEditTemplate] = useState("");
 
   return (
-    <div className="h-[calc(50%-8px)] w-[50%] rounded-xl relative flex flex-col bg-secondary px-1 pb-1 ">
+    <div className="h-[calc(50%-8px)] w-[50%] rounded-xl relative flex flex-col bg-secondary px-1 pb-1">
       <h2 className="mx-auto text-xl my-1">Templates</h2>
 
-      <div className="flex h-8 items-center bg-secondary rounded-xl pb-1">
-        <a
-          className={`px-2 rounded-lg cursor-pointer ${
-            !showForm && "bg-accent"
-          }`}
+      <div className="flex h-8 items-center bg-secondary rounded-xl pb-1 relative">
+        <Button
+          style="ml-0.5 cursor-pointer relative  py-0.5"
           onClick={() => setShowForm(false)}
-        >
-          All templates
-        </a>
-        <a
-          className={`ml-1 px-2 rounded-lg cursor-pointer ${
-            showForm && "bg-accent"
-          }`}
+          text="All templates"
+        />
+        <Button
+          style="ml-2 cursor-pointer relative py-0.5"
           onClick={() => setShowForm(true)}
-        >
-          Add / Edit
-        </a>
+          text="Add / Edit"
+        />
+        <span
+          className={`h-1 bg-accent absolute bottom-1 transition-all ease-in-out ${
+            showForm ? "translate-x-24 w-20" : "w-24"
+          }`}
+        ></span>
       </div>
 
       {!showForm ? (
