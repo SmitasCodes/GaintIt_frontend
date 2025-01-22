@@ -53,7 +53,7 @@ const AddExerciseInput = ({ getInput }) => {
         Add exercise
       </button>
       {error && (
-        <p className="w-full text-primary pt-1.5">
+        <p className="w-full text-primary pt-1.5 text-sm">
           Please provide the missing exercise {error}.
         </p>
       )}

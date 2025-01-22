@@ -17,6 +17,8 @@ const TemplateForm = ({ editTemplate }) => {
   const [templateID, setTemplateID] = useState("");
   const { token } = useAuth();
   const { fetchTemplates } = useTemplates();
+  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   // If editTemplate is true, states are updated in order to update template later in a process
   useEffect(() => {
@@ -26,6 +28,13 @@ const TemplateForm = ({ editTemplate }) => {
       setTemplateID(editTemplate._id);
     }
   }, [editTemplate]);
+
+  // Updating error state once exercises gets added if error is related to exercises
+  useEffect(() => {
+    if (exercises.length && error == "exercises") {
+      setError("");
+    }
+  }, [exercises]);
 
   // Callback function, updates exercises state, getting values from AddExerciseInput.jsx
   const getExerciseInput = (exerciseName, exerciseSets) => {
@@ -37,10 +46,10 @@ const TemplateForm = ({ editTemplate }) => {
 
   const submitTemplateHandler = async () => {
     if (!templateName) {
-      console.log("Please enter template name");
+      setError("name");
       return;
     } else if (!exercises.length) {
-      console.log("Please add some exercises");
+      setError("exercises");
       return;
     }
 
@@ -70,9 +79,13 @@ const TemplateForm = ({ editTemplate }) => {
         (!editTemplate && response == 201) ||
         (editTemplate && response == 200)
       ) {
-        console.log(
+        setSuccessMessage(
           `Template ${!editTemplate ? "added" : "updated"} succesfully!`
         );
+
+        setTimeout(() => {
+          setSuccessMessage("");
+        }, 6000);
       }
     } catch (error) {
       console.error(
@@ -84,6 +97,7 @@ const TemplateForm = ({ editTemplate }) => {
     fetchTemplates();
     setExercises([]);
     setTemplateName("");
+    setError("");
   };
 
   return (
@@ -93,13 +107,29 @@ const TemplateForm = ({ editTemplate }) => {
           <label>Template name:</label>
           <input
             type="text"
-            className="ml-2 text-md outline-none"
+            className={`ml-2 text-md outline-none border-2 rounded-md  ${
+              error === "name" ? "border-primary" : "border-transparent"
+            }`}
             onChange={(e) => setTemplateName(e.target.value)}
             value={templateName}
           />
         </div>
 
         <AddExerciseInput getInput={getExerciseInput} />
+        {error ? (
+          <p className="text-primary pt-1.5 text-sm">
+            Please provide the missing template {error}
+          </p>
+        ) : (
+          ""
+        )}
+
+        {successMessage ? (
+          <p className="text-emerald-600 pt-1.5 text-sm">{successMessage}</p>
+        ) : (
+          ""
+        )}
+
         <TemplateExercises exercises={exercises} setExercises={setExercises} />
         <TemplateSubmitWrapper
           buttonText={editTemplate ? "Update Template" : "Add Template"}
